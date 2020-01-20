@@ -124,6 +124,8 @@ dotfile_copy(){
   fi;
   /bin/su -c "/usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home checkout" - $SUDO_USER
   /bin/su -c "/usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home config status.showUntrackedFiles no" - $SUDO_USER
+  echo "Copied these dotfiles from $dotfile_repo :"
+  /usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home ls-files
 }
 
 ###  Main  ###
@@ -166,8 +168,8 @@ elif linux gnu; then
     rulem "Kali Customization" "~"
   fi
   if exists git; then
-    rulem "Dotfile Installation" "~"
-    try "Grabbing dotfiles. Conflicts will be saved to .config-backup" dotfile_copy
+    rulem "Fetching Dotfiles" "~"
+    try dotfile_copy "Dotfiles fetched."
   else
     err "git not detected, cannot gather dotfiles."
   fi
