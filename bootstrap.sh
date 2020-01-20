@@ -103,7 +103,7 @@ dotfile_copy(){
   [ ! -d "$user_home/.cfg" ] && /bin/su -c "mkdir $user_home/.cfg" - $SUDO_USER
   /bin/su -c "git clone --bare $dotfile_repo $user_home/.cfg" - $SUDO_USER
   [ ! -d "$user_home/.config-backup" ] && /bin/su -c "mkdir -p .config-backup" - $SUDO_USER
-  /bin/su -c "/usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home checkout -f
+  /bin/su -c "/usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home checkout -f" - $SUDO_USER
   if [ $? = 0 ]; then
     echo "Checked out config.";
   else
