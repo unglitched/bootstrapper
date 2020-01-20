@@ -50,7 +50,7 @@ exists() { command -v "$1" >/dev/null 2>&1; }
 error() { printf "$@\n" >&2; exit 1; }
 success() { printf "$@\n\n"; }
 log() { printf "$@\n"; }
-try() { "$1" && success "$1" || error "Failure at $1"; }
+try() { "$1" && success "$2" || error "Failure at $1"; }
 
 apt_install() {
   printf "Installing package $1 ... " 
