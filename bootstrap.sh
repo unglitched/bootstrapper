@@ -98,20 +98,22 @@ pip3_packages() {
 }
 
 ### Dotfile Stuff ###
-config(){ /usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home $@; }
 dotfile_copy(){
   [ ! -d "$user_home/.cfg" ] && /bin/su -c "mkdir $user_home/.cfg" - $SUDO_USER
   /bin/su -c "git clone --bare $dotfile_repo $user_home/.cfg" - $SUDO_USER
   [ ! -d "$user_home/.config-backup" ] && /bin/su -c "mkdir -p $user_home/.config-backup" - $SUDO_USER
-  config checkout -f
+  /bin/su -c "/usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home checkout -f" - $SUDO_USER
   if [ $? = 0 ]; then
     echo "Checked out config.";
   else
     echo "Backing up pre-existing dot files.";
-    config checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv $user_home/{} $user_home/.config-backup/{}
+    /bin/su -c "/usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home checkout" - $SUDO_USER 2>&1 
+    | egrep "\s+\." 
+    | awk {'print $1'} 
+    | xargs -I{} /bin/su -c "mv $user_home/{} $user_home/.config-backup/{}" - $SUDO_USER
   fi;
-  config checkout
-  config config status.showUntrackedFiles no
+  /bin/su -c "/usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home checkout" - $SUDO_USER
+  /bin/su -c "/usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home config status.showUntrackedFiles no" - $SUDO_USER
 }
 
 
