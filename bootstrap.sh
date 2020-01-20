@@ -54,7 +54,11 @@ try() { "$1" && success "$2" || error "Failure at $1"; }
 
 apt_install() {
   printf "Installing package $1 ... " 
-  DEBIAN_FRONTEND=noninteractive apt-get install -qq $1 < /dev/null > /dev/null && echo "Installed!"
+  if ! dpkg -s $1 >/dev/null 2>&1; then
+    DEBIAN_FRONTEND=noninteractive apt-get install -qq $1 < /dev/null > /dev/null && echo "Installed!"
+  else
+    echo "Skipped."
+  fi
 }
 
 ### Installer Functions ###
