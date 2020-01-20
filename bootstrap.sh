@@ -123,7 +123,7 @@ printf "\n"
 
 rulem "!!!WARNING!!!" "#"
 printf "\nWARNING: THIS WILL OVERWRITE LOCAL FILES!"
-printf "\nThis is for FRESHLY INSTALLED systems only!\n"
+printf "\nThis is for FRESHLY INSTALLED systems only!\n\n"
 rulem "!!!WARNING!!!" "#"
 
 echo "Really continue?"
