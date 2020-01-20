@@ -50,17 +50,17 @@ exists() { command -v "$1" >/dev/null 2>&1; }
 error() { printf "$@\n" >&2; exit 1; }
 success() { printf "$@\n\n"; }
 log() { printf "$@\n"; }
-try() { log "$1" && "$2" && success "$3" || error "Failure at $1"; }
+try() { "$2" && success "$3" || error "Failure at $1"; }
 
 apt_install() {
-  printf "Installing package $1 ----- " 
+  printf "Installing package $1 ... " 
   DEBIAN_FRONTEND=noninteractive apt-get install -qq $1 < /dev/null > /dev/null && echo "Installed!"
 }
 
 ### Installer Functions ###
 
 debian_install() { 
-  apt-get update < /dev/null > /dev/null && echo "Packages updated"
+  apt-get update < /dev/null > /dev/null && echo "Apt updated"
   declare -a debian_packages=("curl" "git" "python3" "python3-pip" "fonts-powerline" "vim" "suckless-tools" "i3" "i3blocks" "zsh" "xorg" "tmux" "lightdm" "rofi" "kitty" "open-vm-tools-desktop")
   for package in "${debian_packages[@]}"; do
     apt_install $package
@@ -84,7 +84,7 @@ debian_install() {
   install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
   sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
   apt_install apt-transport-https
-  apt-get update < /dev/null > /dev/null && echo "Packages updated"
+  apt-get update < /dev/null > /dev/null && echo "Apt updated"
   apt_install code
   rm packages.microsoft.gpg
 }
@@ -95,6 +95,14 @@ pip3_packages() {
     echo "Installing $package -----"
     pip3 -q install $package; < /dev/null > /dev/null && echo "Installed!"
   done 
+}
+
+debian_re_packages() {
+  apt-get update < /dev/null > /dev/null && echo "Apt updated"
+  declare -a debian_packages=("radare2" "gdb" "binwalk")
+  for package in "${debian_packages[@]}"; do
+    apt_install $package
+  done
 }
 
 ### Dotfile Stuff ###
@@ -143,15 +151,19 @@ if os darwin; then
 elif linux gnu; then
   if distro "Debian"; then
     rulem "Debian Customization" "~"
-    try "Installing Debian software" debian_install "Debian software set up!"
-    try "Installing pip3 packages" pip3_packages "Custom python packages installed!"
+    rulem "Installing Debian software" 
+    try debian_install "Installed debian packages"
+    rulem "Installing pip3 packages" 
+    try pip3_packages "Installed pip3 packages"
+    rulem "Installing reverse engineering tools" 
+    try debian_re_packages "Installed reverse engineering tools"
   fi
   if distro "Kali"; then
     rulem "Kali Customization" "~"
   fi
   if exists git; then
     rulem "Dotfile Installation" "~"
-    try "Grabbing dotfiles. Conflicts will be saved to .config-backup" dotfile_copy "Dotfile repo cloned"
+    try "Grabbing dotfiles. Conflicts will be saved to .config-backup" dotfile_copy
   else
     err "git not detected, cannot gather dotfiles."
   fi
