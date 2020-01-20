@@ -102,15 +102,6 @@ dotfile_copy(){
   [ ! -d "$user_home/.cfg" ] && /bin/su -c "mkdir $user_home/.cfg" - $SUDO_USER
   /bin/su -c "git clone --bare $dotfile_repo $user_home/.cfg" - $SUDO_USER
   [ ! -d "$user_home/.config-backup" ] && /bin/su -c "mkdir -p $user_home/.config-backup" - $SUDO_USER
-  /bin/su -c "/usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home checkout -f" - $SUDO_USER
-  if [ $? = 0 ]; then
-    echo "Checked out config.";
-  else
-    echo "Backing up pre-existing dot files.";
-    /bin/su -c "/usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home checkout 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv $user_home/{} $user_home/.config-backup/{}" - $SUDO_USER
-  fi;
-  /bin/su -c "/usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home checkout" - $SUDO_USER
-  /bin/su -c "/usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home config status.showUntrackedFiles no" - $SUDO_USER
 }
 
 
