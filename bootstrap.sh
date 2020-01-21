@@ -59,7 +59,7 @@ linux() {
   [[ "${sys}" == "$1" ]];
 }
 apt_install() {
-  echo "Installing package set: $1 (contains: $2) ... "
+  echo "Installing $1 package set (contains: $2) ... "
   DEBIAN_FRONTEND=noninteractive apt-get install -qq $2 < /dev/null > /dev/null && echo "Complete!"
 }
 
