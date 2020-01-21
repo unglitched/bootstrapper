@@ -70,11 +70,12 @@ debian_install() {
   # Apt stuff, desktop environment
   apt-get update < /dev/null > /dev/null
   apt_install "base" "$deb_apt_pkgs"
+  
+  echo 'exec i3' > $user_home/.xsession
+  echo lightdm shared/default-x-display-manager select lightdm | sudo debconf-set-selections -v
   for package in "${deb_custom_pkgs[@]}"; do
     apt_install "custom" "$package"
   done
-  echo lightdm shared/default-x-display-manager select lightdm | sudo debconf-set-selections -v
-  echo 'exec i3' > $user_home/.xsession
   
   # Zsh install
   rulem "Installing Oh My Zsh"
