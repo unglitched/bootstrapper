@@ -16,16 +16,24 @@ user_home=$(getent passwd $SUDO_USER | cut -d: -f6)
 
 ### User Variables - EDIT THESE! :) ###
 # dotfile_repo - Your dotfiles repository, make sure it looks like https://github.com/qrbounty/dotfiles
-# deb_apt_pkgs - The packages you want installed using debian's apt. These will all be installed in one command.
+# deb_apt_pkgs - The base packages you want installed using debian's apt. These will all be installed in one command.
 # pip3_pkgs    - The pip3 packages to install for Python 3. These will all be installed in one command.
+# deb_custom_pkgs - This is just a nice way to chunk up packages logically, for quicker on/off and testing.
 
 dotfile_repo="https://www.github.com/qrbounty/dotfiles.git"
-deb_apt_pkgs="curl git python3 python3-pip suckless-tools tmux vim xorg"
+deb_apt_pkgs="curl git python3 python3-pip suckless-tools tmux vim "
 pip3_pkgs="yara"
 declare -a deb_custom_pkgs=(
-  "binwalk gdb radare2"
+  # Terminal stuff
   "zsh fonts-powerline"
-  "i3 i3blocks kitty lightdm rofi"
+
+  # Desktop environment
+  "xorg i3 i3blocks kitty lightdm rofi"
+  
+  # Reverse engineering
+  "binwalk gdb radare2"
+  
+  # VMware Tools (TODO: Move me!)
   "open-vm-tools-desktop"
 )
 
