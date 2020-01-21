@@ -17,6 +17,38 @@ fi
 dotfile_repo="https://www.github.com/qrbounty/dotfiles.git"
 user_home=$(getent passwd $SUDO_USER | cut -d: -f6)
 
+# Package lists (edit these as needed)
+
+declare -a debian_packages=(
+  "curl"
+  "git" 
+  "python3"
+  "python3-pip"
+  "fonts-powerline"
+  "vim"
+  "suckless-tools"
+  "i3"
+  "i3blocks" 
+  "zsh"
+  "xorg"
+  "tmux"
+  "lightdm"
+  "rofi"
+  "kitty"
+  "open-vm-tools-desktop"
+)
+
+declare -a debian_re_packages=(
+  "radare2"
+  "gdb"
+  "binwalk"
+)
+
+declare -a pip3_packages=(
+  "yara"
+)
+
+
 
 ### Helpers / Formatters ###
 # Print a horizontal rule
@@ -65,7 +97,6 @@ apt_install() {
 
 debian_install() { 
   apt-get update < /dev/null > /dev/null && echo "Apt updated"
-  declare -a debian_packages=("curl" "git" "python3" "python3-pip" "fonts-powerline" "vim" "suckless-tools" "i3" "i3blocks" "zsh" "xorg" "tmux" "lightdm" "rofi" "kitty" "open-vm-tools-desktop")
   for package in "${debian_packages[@]}"; do
     apt_install $package
   done
@@ -95,7 +126,6 @@ debian_install() {
 }
 
 pip3_packages() { 
-  declare -a pip3_packages=("yara")
   for package in "${pip3_packages[@]}"; do
     echo "Installing $package ... "
     pip3 -q install $package; < /dev/null > /dev/null && echo "Installed!"
@@ -104,8 +134,7 @@ pip3_packages() {
 
 debian_re_packages() {
   apt-get update < /dev/null > /dev/null && echo "Apt updated"
-  declare -a debian_packages=("radare2" "gdb" "binwalk")
-  for package in "${debian_packages[@]}"; do
+  for package in "${debian_re_packages[@]}"; do
     apt_install $package
   done
 }
