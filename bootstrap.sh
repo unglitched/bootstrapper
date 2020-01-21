@@ -52,7 +52,7 @@ linux() {
 apt_install() {
   echo "Installing package set $1"
   printf "Contains: $2"
-  DEBIAN_FRONTEND=noninteractive apt-get install -qq $1 < /dev/null > /dev/null && echo "Installed!"
+  DEBIAN_FRONTEND=noninteractive apt-get install -qq $2 < /dev/null > /dev/null && echo "Installed!"
 }
 
 ### Installer Functions ###
@@ -61,9 +61,9 @@ pip3_install() { pip3 -q install $pip3_pkgs; < /dev/null > /dev/null && echo "In
 debian_install() {
   # Apt stuff, desktop environment
   apt-get update < /dev/null > /dev/null
-  apt_install "base" $deb_apt_pkgs
+  apt_install "base" "$deb_apt_pkgs"
   for package in "${deb_custom_pkgs[@]}"; do
-    apt_install "custom" $package
+    apt_install "custom" "$package"
   done
   echo lightdm shared/default-x-display-manager select lightdm | sudo debconf-set-selections -v
   echo 'exec i3' > $user_home/.xsession
