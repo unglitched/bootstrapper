@@ -69,6 +69,7 @@ debian_install() {
   for package in "${debian_packages[@]}"; do
     apt_install $package
   done
+  echo lightdm shared/default-x-display-manager select lightdm | sudo debconf-set-selections -v
   dpkg-reconfigure lightdm
   echo 'exec i3' > $user_home/.xsession
   
