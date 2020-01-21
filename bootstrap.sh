@@ -20,12 +20,13 @@ user_home=$(getent passwd $SUDO_USER | cut -d: -f6)
 # pip3_pkgs    - The pip3 packages to install for Python 3. These will all be installed in one command.
 
 dotfile_repo="https://www.github.com/qrbounty/dotfiles.git"
-deb_apt_pkgs="curl git python3 python3-pip fonts-powerline vim suckless-tools i3 i3blocks \
-  zsh xorg tmux lightdm rofi kitty"
+deb_apt_pkgs="curl git python3 python3-pip suckless-tools tmux vim xorg"
 pip3_pkgs="yara"
 declare -a deb_custom_pkgs=(
+  "binwalk gdb radare2"
+  "zsh fonts-powerline"
+  "i3 i3blocks kitty lightdm rofi"
   "open-vm-tools-desktop"
-  "radare2 gdb binwalk"
 )
 
 
@@ -50,9 +51,8 @@ linux() {
   [[ "${sys}" == "$1" ]];
 }
 apt_install() {
-  echo "Installing package set $1"
-  printf "Contains: $2"
-  DEBIAN_FRONTEND=noninteractive apt-get install -qq $2 < /dev/null > /dev/null && echo "Installed!"
+  echo "Installing package set: $1 (contains: $2) ... "
+  DEBIAN_FRONTEND=noninteractive apt-get install -qq $2 < /dev/null > /dev/null && echo "Complete!"
 }
 
 ### Installer Functions ###
