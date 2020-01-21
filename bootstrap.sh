@@ -49,19 +49,21 @@ linux() {
   esac
   [[ "${sys}" == "$1" ]];
 }
-
+apt_install() {
+  echo "Installing package set $1"
+  printf "Contains: $2"
+  DEBIAN_FRONTEND=noninteractive apt-get install -qq $1 < /dev/null > /dev/null && echo "Installed!"
+}
 
 ### Installer Functions ###
 pip3_install() { pip3 -q install $pip3_pkgs; < /dev/null > /dev/null && echo "Installed!"; }
 
 debian_install() {
   # Apt stuff, desktop environment
-  apt-get update < /dev/null > /dev/null && echo "apt updated"
-  printf "Installing base apt packages: $deb_apt_pkgs ... "
-  DEBIAN_FRONTEND=noninteractive apt-get install -qq $deb_apt_pkgs < /dev/null > /dev/null && echo "Installed!"
+  apt-get update < /dev/null > /dev/null
+  apt_install "base" $deb_apt_pkgs
   for package in "${deb_custom_pkgs[@]}"; do
-    printf "Installing custom package set: $package ... "
-    DEBIAN_FRONTEND=noninteractive apt-get install -qq $package < /dev/null > /dev/null && echo "Installed!"
+    apt_install "custom" $package
   done
   echo lightdm shared/default-x-display-manager select lightdm | sudo debconf-set-selections -v
   echo 'exec i3' > $user_home/.xsession
@@ -77,9 +79,9 @@ debian_install() {
   curl -s https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
   install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
   sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-  apt_install apt-transport-https
-  apt-get update < /dev/null > /dev/null && echo "Apt updated"
-  apt_install code
+  apt_install "VS Code Deps" apt-transport-https
+  apt-get update < /dev/null > /dev/null
+  apt_install "VS Code Core" code
   rm packages.microsoft.gpg
 }
 
