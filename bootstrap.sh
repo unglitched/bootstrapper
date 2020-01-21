@@ -21,9 +21,10 @@ user_home=$(getent passwd $SUDO_USER | cut -d: -f6)
 
 dotfile_repo="https://www.github.com/qrbounty/dotfiles.git"
 deb_apt_pkgs="curl git python3 python3-pip fonts-powerline vim suckless-tools i3 i3blocks \
-  zsh xorg tmux lightdm rofi kitty open-vm-tools-desktop"
+  zsh xorg tmux lightdm rofi kitty"
 pip3_pkgs="yara"
 declare -a deb_custom_pkgs=(
+  "open-vm-tools-desktop"
   "radare2 gdb binwalk"
 )
 
