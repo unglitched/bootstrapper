@@ -33,6 +33,9 @@ declare -a deb_custom_pkgs=(
   # Reverse engineering
   "binwalk gdb radare2"
   
+  # Fuzzing, etc.
+  "afl"
+  
   # VMware Tools (TODO: Move me!)
   "open-vm-tools-desktop"
 )
