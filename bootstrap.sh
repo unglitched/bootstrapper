@@ -28,7 +28,7 @@ declare -a deb_custom_pkgs=(
   "zsh fonts-powerline"
 
   # Desktop environment
-  "xorg i3 i3blocks kitty lightdm rofi"
+  "xorg i3 i3blocks kitty lightdm rofi feh"
   
   # Reverse engineering
   "binwalk gdb radare2"
