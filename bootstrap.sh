@@ -25,7 +25,7 @@ deb_apt_pkgs="curl git python3 python3-pip suckless-tools tmux vim "
 pip3_pkgs="yara"
 declare -a deb_custom_pkgs=(
   # Terminal stuff
-  "zsh fonts-powerline fonts-font-awesome"
+  "zsh fonts-powerline"
 
   # Desktop environment
   "xorg i3 i3blocks kitty lightdm rofi feh"
@@ -37,7 +37,7 @@ declare -a deb_custom_pkgs=(
   "afl"
   
   # Fonts
-  "fonts-hack"
+  "fonts-hack fonts-font-awesome"
   
   # VMware Tools (TODO: Move me!)
   "open-vm-tools-desktop"
