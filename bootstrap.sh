@@ -36,6 +36,9 @@ declare -a deb_custom_pkgs=(
   # Fuzzing, etc.
   "afl"
   
+  # Fonts
+  "fonts-hack"
+  
   # VMware Tools (TODO: Move me!)
   "open-vm-tools-desktop"
 )
