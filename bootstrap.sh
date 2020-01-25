@@ -87,6 +87,7 @@ debian_install() {
   echo 'exec i3' > $user_home/.xsession
   
   # Lightdm config
+  # looking for a clever hack to avoid the prompt, however: https://bugs.launchpad.net/ubuntu/+source/gdm3/+bug/1616905
   rulem "Configuring lightdm"
   echo lightdm shared/default-x-display-manager select lightdm | sudo debconf-set-selections -v
   # echo "set shared/default-x-display-manager lightdm" | debconf-communicate
