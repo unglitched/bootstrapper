@@ -100,6 +100,10 @@ debian_install() {
   apt_install "VS Code Core" code
   rm packages.microsoft.gpg
   
+  # bat - https://github.com/sharkdp/bat/
+  wget -O /tmp/bat.deb https://github.com/sharkdp/bat/releases/download/v0.12.1/bat_0.12.1_amd64.deb
+  dpkg -i /tmp/bat.deb
+  
   # Etc
   updatedb
 }
