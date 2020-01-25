@@ -5,7 +5,13 @@ A personal bootstrap script for my new systems.
 This works in tandem with my dotfiles repo when run on a new system. It will detect the current OS and install the relevant packages and applications needed, as well as pull down my dotfiles.
 
 ## Usage
-On a new system you should wget/curl bootstrap.sh, examine it and customize it if needed, chmod +x it, and run it as sudo.
+1. Do a fresh install of your OS (Debian thus far), defaults should be fine however you can deselect any UI stuff if you want.
+2. Make your account a member of the sudo group (see Requirements below)
+3. `wget https://raw.githubusercontent.com/qrbounty/bootstrapper/master/bootstrap.sh`
+4. Examine `bootstrap.sh` and customize as needed
+5. `chmod +x bootstrap.sh`
+6. `sudo ./bootstrap/.sh`
+7. After a reboot everything should be complete!
 
 Or if you're feeling extremely, extremely dangerous go ahead and `sudo su -c "bash <(wget -qO- https://git.io/JvIcy)"`, just promise you'll tell everyone else to never run random scripts from the internet with bash, particularly with sudo...
 
