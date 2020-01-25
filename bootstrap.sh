@@ -93,7 +93,8 @@ debian_install() {
   echo "theme-name = Adwaita-dark" >> -a /etc/lightdm/lightdm-gtk-greeter.conf
   echo "font-name = Hack" >> /etc/lightdm/lightdm-gtk-greeter.conf
   echo "hide-user-image = true" >> /etc/lightdm/lightdm-gtk-greeter.conf
-  dpkg-reconfigure lightdm
+  sudo echo "/usr/sbin/lightdm" > /etc/X11/default-display-manager
+  #dpkg-reconfigure lightdm 
   
   # Zsh install
   rulem "Installing Oh My Zsh"
