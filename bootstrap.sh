@@ -22,7 +22,7 @@ user_home=$(getent passwd $SUDO_USER | cut -d: -f6)
 
 dotfile_repo="https://www.github.com/qrbounty/dotfiles.git"
 deb_apt_pkgs="curl git python3 python3-pip suckless-tools tmux vim "
-pip3_pkgs="yara"
+pip3_pkgs="yara pillow"
 declare -a deb_custom_pkgs=(
   # Terminal stuff
   "zsh fonts-powerline"
