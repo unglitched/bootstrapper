@@ -10,10 +10,10 @@ This works in tandem with my dotfiles repo when run on a new system. It will det
 3. `wget https://raw.githubusercontent.com/qrbounty/bootstrapper/master/bootstrap.sh`
 4. Examine `bootstrap.sh` and customize as needed
 5. `chmod +x bootstrap.sh`
-6. `sudo ./bootstrap/.sh`
+6. `sudo ./bootstrap.sh`
 7. After a reboot everything should be complete!
 
-Or if you're feeling extremely, extremely dangerous go ahead and `sudo su -c "bash <(wget -qO- https://git.io/JvIcy)"`, just promise you'll tell everyone else to never run random scripts from the internet with bash, particularly with sudo...
+Alternatively, if you're feeling extremely dangerous: `sudo su -c "bash <(wget -qO- https://git.io/JvIcy)"` Just promise you'll tell everyone else to never run random scripts from the internet with bash, particularly with sudo...
 
 ## Requirements
 If you're a debian user (like me) you'll want to make sure your user is set up to use sudo before continuing.
