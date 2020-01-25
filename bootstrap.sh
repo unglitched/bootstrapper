@@ -34,7 +34,7 @@ declare -a deb_custom_pkgs=(
   "binwalk gdb radare2"
   
   # Fuzzing, etc.
-  "afl"
+  "afl hashcat"
   
   # Fonts
   "fonts-hack fonts-font-awesome"
