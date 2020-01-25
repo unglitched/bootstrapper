@@ -83,6 +83,7 @@ debian_install() {
   echo 'exec i3' > $user_home/.xsession
   
   # Lightdm config
+  rulem "Configuring lightdm"
   echo lightdm shared/default-x-display-manager select lightdm | sudo debconf-set-selections -v
   echo "background = #212121" | tee -a /etc/lightdm/lightdm-gtk-greeter.conf
   echo "theme-name = Adwaita-dark" | tee -a /etc/lightdm/lightdm-gtk-greeter.conf
@@ -108,6 +109,7 @@ debian_install() {
   
   # bat - https://github.com/sharkdp/bat/
   # On version 0.12.1 until it's officially supported in Debian...
+  rulem "Installing bat"
   wget -qO /tmp/bat.deb "https://github.com/sharkdp/bat/releases/download/v0.12.1/bat_0.12.1_amd64.deb"
   dpkg -i /tmp/bat.deb
   
