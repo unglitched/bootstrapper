@@ -4,7 +4,9 @@
 #
 # TODO: OSX install tasks
 # TODO: Add dry run functionality
+# TODO: Replace wget calls with curl
 # TODO: Move open-vm-tools package to an installer that will actually detect if it's a VM...
+# TODO: Get copy/paste working between host and guest for VMWare installs.
 set -e
 
 if [ "$EUID" -ne 0 ]
@@ -38,9 +40,6 @@ declare -a deb_custom_pkgs=(
   
   # Fonts
   "fonts-hack fonts-font-awesome"
-  
-  # VMware Tools (TODO: Move me!)
-  "open-vm-tools-desktop"
 )
 
 
@@ -80,6 +79,11 @@ debian_install() {
   for package in "${deb_custom_pkgs[@]}"; do
     apt_install "custom" "$package"
   done
+  
+  if dmidecode -s system-manufacturer = "VMware, Inc."; then
+    apt_install "VMware" "open-vm-tools-desktop"
+  fi
+  
   echo 'exec i3' > $user_home/.xsession
   
   # Lightdm config
