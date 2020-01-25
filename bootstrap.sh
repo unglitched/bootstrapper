@@ -101,6 +101,13 @@ debian_install() {
   rm packages.microsoft.gpg
 }
 
+random_wallpaper(){
+  # Get a random wallpaper from Picsum, would be loaded by feh later in i3 cfg.
+  height=1050
+  width=1680
+  curl -L "https://picsum.photos/$width/$height/" --create-dirs -o $HOME/Pictures/Wallpapers/starter.jpg
+}
+
 
 ### Dotfile Fetch/Setup ###
 # TODO: Make this cleaner.
@@ -154,6 +161,8 @@ elif linux gnu; then
     try debian_install
     rulem "Installing pip3 packages" 
     try pip3_install
+    rulem "Getting random starter wallpaper"
+    try random_wallpaper
   fi
   if distro "Kali"; then
     rulem "Kali Customization" "~"
