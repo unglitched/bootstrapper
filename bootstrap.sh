@@ -108,7 +108,7 @@ debian_install() {
   
   # bat - https://github.com/sharkdp/bat/
   # On version 0.12.1 until it's officially supported in Debian...
-  wget -O /tmp/bat.deb "https://github.com/sharkdp/bat/releases/download/v0.12.1/bat_0.12.1_amd64.deb"
+  wget -qO /tmp/bat.deb "https://github.com/sharkdp/bat/releases/download/v0.12.1/bat_0.12.1_amd64.deb"
   dpkg -i /tmp/bat.deb
   
   # Etc
