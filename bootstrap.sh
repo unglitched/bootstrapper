@@ -21,7 +21,7 @@ user_home=$(getent passwd $SUDO_USER | cut -d: -f6)
 # deb_custom_pkgs - This is just a nice way to chunk up packages logically, for quicker on/off and testing.
 
 dotfile_repo="https://www.github.com/qrbounty/dotfiles.git"
-deb_apt_pkgs="curl git python3 python3-pip suckless-tools tmux vim "
+deb_apt_pkgs="curl git python3 python3-pip suckless-tools tmux vim ripgrep"
 pip3_pkgs="yara pillow"
 declare -a deb_custom_pkgs=(
   # Terminal stuff
