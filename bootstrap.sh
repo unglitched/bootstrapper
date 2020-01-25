@@ -85,7 +85,7 @@ debian_install() {
   # Lightdm config
   echo lightdm shared/default-x-display-manager select lightdm | sudo debconf-set-selections -v
   echo "background = #212121" | tee -a /etc/lightdm/lightdm-gtk-greeter.conf
-  echo "theme-name = Adwaita-Dark" | tee -a /etc/lightdm/lightdm-gtk-greeter.conf
+  echo "theme-name = Adwaita-dark" | tee -a /etc/lightdm/lightdm-gtk-greeter.conf
   echo "font-name = Hack" | tee -a /etc/lightdm/lightdm-gtk-greeter.conf
   echo "hide-user-image = true" | tee -a /etc/lightdm/lightdm-gtk-greeter.conf
   dpkg-reconfigure lightdm
