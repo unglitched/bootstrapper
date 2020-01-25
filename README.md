@@ -13,7 +13,9 @@ This works in tandem with my dotfiles repo when run on a new system. It will det
 6. `sudo ./bootstrap.sh`
 7. After a reboot everything should be complete!
 
-Alternatively, if you're feeling extremely dangerous: `sudo su -c "bash <(wget -qO- https://git.io/JvIcy)"` Just promise you'll tell everyone else to never run random scripts from the internet with bash, particularly with sudo...
+Alternatively, if you're feeling extremely dangerous, replace steps 3-6 with: `sudo su -c "bash <(wget -qO- https://git.io/JvIcy)"` 
+
+Just promise you'll tell everyone else to never run random scripts from the internet with bash, particularly with sudo...
 
 ## Requirements
 If you're a debian user (like me) you'll want to make sure your user is set up to use sudo before continuing.
