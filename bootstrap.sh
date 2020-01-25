@@ -105,7 +105,7 @@ random_wallpaper(){
   # Get a random wallpaper from Picsum, would be loaded by feh later in i3 cfg.
   height=1050
   width=1680
-  curl -L "https://picsum.photos/$width/$height/" --create-dirs -o $HOME/Pictures/Wallpapers/starter.jpg
+  curl -L "https://picsum.photos/$width/$height/" --create-dirs -o $user_home/Pictures/Wallpapers/starter.jpg
 }
 
 
