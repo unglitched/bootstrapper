@@ -26,10 +26,10 @@ deb_apt_pkgs="curl locate git python3 python3-pip suckless-tools tmux vim"
 pip3_pkgs="yara pillow"
 declare -a deb_custom_pkgs=(
   # Terminal stuff
-  "zsh"
+  "zsh highlight"
 
   # "Modern" Terminal Apps
-  "tldr ripgrep neovim exa"
+  "tldr ripgrep neovim exa ranger"
   
   # "Essential" Fonts
   "fonts-powerline fonts-hack fonts-font-awesome"
