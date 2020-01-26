@@ -23,14 +23,23 @@ user_home=$(getent passwd $SUDO_USER | cut -d: -f6)
 # deb_custom_pkgs - This is just a nice way to chunk up packages logically, for quicker on/off and testing.
 
 dotfile_repo="https://www.github.com/qrbounty/dotfiles.git"
-deb_apt_pkgs="curl locate git python3 python3-pip suckless-tools tmux vim ripgrep"
+deb_apt_pkgs="curl locate git python3 python3-pip suckless-tools tmux vim"
 pip3_pkgs="yara pillow"
 declare -a deb_custom_pkgs=(
   # Terminal stuff
-  "zsh fonts-powerline"
+  "zsh"
+
+  # "Modern" Terminal Apps
+  "tldr ripgrep neovim"
+  
+  # "Essential" Fonts
+  "fonts-powerline fonts-hack fonts-font-awesome"
 
   # Desktop environment
   "xorg i3 i3blocks kitty lightdm rofi feh"
+  
+  # Common Apps
+  "vlc transmission"
   
   # Reverse engineering
   "binwalk gdb radare2"
@@ -38,8 +47,7 @@ declare -a deb_custom_pkgs=(
   # Fuzzing, etc.
   "afl hashcat"
   
-  # Fonts
-  "fonts-hack fonts-font-awesome"
+
 )
 
 
