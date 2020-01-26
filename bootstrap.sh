@@ -5,7 +5,6 @@
 # TODO: OSX install tasks
 # TODO: Add dry run functionality
 # TODO: Replace wget calls with curl
-# TODO: Move open-vm-tools package to an installer that will actually detect if it's a VM...
 # TODO: Get copy/paste working between host and guest for VMWare installs.
 set -e
 
