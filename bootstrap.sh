@@ -30,7 +30,7 @@ declare -a deb_custom_pkgs=(
   "zsh"
 
   # "Modern" Terminal Apps
-  "tldr ripgrep neovim"
+  "tldr ripgrep neovim exa"
   
   # "Essential" Fonts
   "fonts-powerline fonts-hack fonts-font-awesome"
