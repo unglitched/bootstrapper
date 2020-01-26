@@ -36,7 +36,7 @@ declare -a deb_custom_pkgs=(
   "fonts-powerline fonts-hack fonts-font-awesome"
 
   # Desktop environment
-  "xorg i3 i3blocks kitty lightdm rofi feh"
+  "xorg i3 i3blocks kitty lightdm rofi feh compton"
   
   # Common Apps
   "vlc transmission"
