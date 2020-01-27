@@ -22,7 +22,7 @@ user_home=$(getent passwd $SUDO_USER | cut -d: -f6)
 # deb_custom_pkgs - This is just a nice way to chunk up packages logically, for quicker on/off and testing.
 
 dotfile_repo="https://www.github.com/qrbounty/dotfiles.git"
-deb_apt_pkgs="curl locate git python3 python3-pip suckless-tools tmux vim"
+deb_apt_pkgs="curl locate git python3 python3-pip suckless-tools tmux vim tree"
 pip3_pkgs="yara pillow"
 declare -a deb_custom_pkgs=(
   # Terminal stuff
@@ -163,6 +163,7 @@ dotfile_copy(){
   /bin/su -c "/usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home config status.showUntrackedFiles no" - $SUDO_USER
   echo "Copied these dotfiles from $dotfile_repo :"
   /usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home ls-files
+  chmod +x $user_home/.config/shell/motd.sh
 }
 
 ###  Main  ###
