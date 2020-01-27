@@ -70,7 +70,7 @@ linux() {
 }
 apt_install() {
   echo "Installing $1 package set (contains: $2) ... "
-  DEBIAN_FRONTEND=noninteractive apt-get install -qq $2 < /dev/null > /dev/null
+  DEBIAN_FRONTEND=noninteractive apt-get install -qq -o=Dpkg::Use-Pty=0 $2 < /dev/null > /dev/null
 }
 
 ### Installer Functions ###
