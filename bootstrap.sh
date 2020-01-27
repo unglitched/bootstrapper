@@ -44,9 +44,7 @@ declare -a deb_custom_pkgs=(
   "binwalk gdb radare2"
   
   # Fuzzing, etc.
-  "afl hashcat"
-  
-
+  "afl hashcat zzuf"
 )
 
 
