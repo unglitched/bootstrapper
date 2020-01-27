@@ -29,7 +29,7 @@ declare -a deb_custom_pkgs=(
   "zsh highlight"
 
   # "Modern" Terminal Apps
-  "tldr ripgrep neovim exa ranger"
+  "tldr ripgrep neovim exa ranger lolcat"
   
   # "Essential" Fonts
   "fonts-powerline fonts-hack fonts-font-awesome"
