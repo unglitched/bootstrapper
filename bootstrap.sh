@@ -38,7 +38,7 @@ declare -a deb_custom_pkgs=(
   "xorg i3 i3blocks kitty lightdm rofi feh"
   
   # Common Apps
-  "vlc transmission"
+  "vlc transmission audacity"
   
   # Reverse engineering
   "binwalk gdb radare2"
