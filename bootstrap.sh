@@ -41,7 +41,7 @@ declare -a deb_custom_pkgs=(
   "vlc transmission audacity"
   
   # Reverse engineering
-  "binwalk gdb radare2"
+  "binwalk gdb radare2 flashrom"
   
   # Fuzzing, etc.
   "afl hashcat zzuf"
