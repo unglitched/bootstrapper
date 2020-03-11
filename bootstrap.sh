@@ -108,10 +108,10 @@ debian_install() {
   /bin/su -c "wget -q https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O - | sh > /dev/null" - $SUDO_USER
   cp $user_home/.oh-my-zsh/templates/zshrc.zsh-template $user_home/.zshrc
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $user_home/.oh-my-zsh/custom/themes/powerlevel10k
-  curl -s https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf > /usr/share/fonts/truetype/meslo-nf/MesloLGS\ NF\ Regular.ttf
-  curl -s https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf > /usr/share/fonts/truetype/meslo-nf/MesloLGS\ NF\ Bold.ttf
-  curl -s https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf > /usr/share/fonts/truetype/meslo-nf/MesloLGS\ NF\ Italic.ttf
-  curl -s https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf > /usr/share/fonts/truetype/meslo-nf/MesloLGS\ NF\ Bold\ Italic.ttf
+  curl -s https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf --create-dirs -o /usr/share/fonts/truetype/meslo-nf/MesloLGS\ NF\ Regular.ttf
+  curl -s https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf --create-dirs -o /usr/share/fonts/truetype/meslo-nf/MesloLGS\ NF\ Bold.ttf
+  curl -s https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf --create-dirs -o /usr/share/fonts/truetype/meslo-nf/MesloLGS\ NF\ Italic.ttf
+  curl -s https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf --create-dirs -o /usr/share/fonts/truetype/meslo-nf/MesloLGS\ NF\ Bold\ Italic.ttf
   chsh -s /bin/zsh $SUDO_USER
   
   # VS Code install
