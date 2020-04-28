@@ -137,6 +137,9 @@ debian_install() {
   
   # Etc
   updatedb > /dev/null
+  # Vim Plug
+  curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
 }
 
 random_wallpaper(){
@@ -209,6 +212,7 @@ elif linux gnu; then
   if exists git; then
     rulem "Fetching Dotfiles" "~"
     try dotfile_copy
+    vim -es -u $user_home/.vimrc -i NONE -c "PlugInstall" -c "qa"
   else
     err "git not detected, cannot gather dotfiles."
   fi
