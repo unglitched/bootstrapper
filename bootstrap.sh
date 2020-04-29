@@ -139,12 +139,13 @@ debian_install() {
   updatedb > /dev/null
   # Vim Plug
   /bin/su -c "/bin/curl -L \"https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim\" --create-dirs -o  $user_home/.vim/autoload/plug.vim" - $SUDO_USER
-  
+  /bin/su -c "vim -es -u $user_home/.vimrc -i NONE -c \"PlugInstall\" -c \"qa\""
   #P10k Fonts
   /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Regular.ttf" - $SUDO_USER
   /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Bold.ttf" - $SUDO_USER
   /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20bold%20Italic.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Bold-Italic.ttf" - $SUDO_USER
   /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Italic.ttf" - $SUDO_USER
+
 }
 
 random_wallpaper(){
