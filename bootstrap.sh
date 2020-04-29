@@ -140,6 +140,10 @@ debian_install() {
   # Vim Plug
   curl -fLo $user_home/.vim/autoload/plug.vim --create-dirs "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
   curl -fLo $user_home/.fonts/Meslo-Regular.ttf --create-dirs "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf"
+  curl -fLo $user_home/.fonts/Meslo-Bold.ttf --create-dirs "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20RBold.ttf"
+  curl -fLo $user_home/.fonts/Meslo-Bold-Italic.ttf --create-dirs "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf"
+  curl -fLo $user_home/.fonts/Meslo-Italic.ttf --create-dirs "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf"
+
 }
 
 random_wallpaper(){
