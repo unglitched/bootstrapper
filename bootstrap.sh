@@ -212,7 +212,6 @@ elif linux gnu; then
   if exists git; then
     rulem "Fetching Dotfiles" "~"
     try dotfile_copy
-    vim -es -u $user_home/.vimrc -i NONE -c "PlugInstall" -c "qa"
   else
     err "git not detected, cannot gather dotfiles."
   fi
