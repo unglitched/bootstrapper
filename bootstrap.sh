@@ -138,8 +138,8 @@ debian_install() {
   # Etc
   updatedb > /dev/null
   # Vim Plug
-  curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
+  curl -fLo $user_home/.vim/autoload/plug.vim --create-dirs "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+  curl -fLo $user_home/.fonts/Meslo-Regular.ttf --create-dirs "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf"
 }
 
 random_wallpaper(){
