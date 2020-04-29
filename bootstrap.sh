@@ -138,11 +138,13 @@ debian_install() {
   # Etc
   updatedb > /dev/null
   # Vim Plug
-  curl -fLo $user_home/.vim/autoload/plug.vim --create-dirs "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-  curl -fLo $user_home/.fonts/Meslo-Regular.ttf --create-dirs "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf"
-  curl -fLo $user_home/.fonts/Meslo-Bold.ttf --create-dirs "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20RBold.ttf"
-  curl -fLo $user_home/.fonts/Meslo-Bold-Italic.ttf --create-dirs "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf"
-  curl -fLo $user_home/.fonts/Meslo-Italic.ttf --create-dirs "https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf"
+  /bin/su -c "/bin/curl -L \"https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim\" --create-dirs -o  $user_home/.vim/autoload/plug.vim" - $SUDO_USER
+  
+  #P10k Fonts
+  /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Regular.ttf" - $SUDO_USER
+  /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Bold.ttf" - $SUDO_USER
+  /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20bold%20Italic.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Bold-Italic.ttf" - $SUDO_USER
+  /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Italic.ttf" - $SUDO_USER
 
 }
 
