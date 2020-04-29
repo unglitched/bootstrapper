@@ -145,7 +145,6 @@ debian_install() {
   /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Bold.ttf" - $SUDO_USER
   /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20bold%20Italic.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Bold-Italic.ttf" - $SUDO_USER
   /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Italic.ttf" - $SUDO_USER
-  chmod 644 $user_home/.fonts/Meslo-Normal.ttf $user_home/.fonts/Meslo-Bold.ttf $user_home/.fonts/Meslo-Bold-Italic.ttf $user_home/.fonts/Meslo-Italic.ttf
 }
 
 random_wallpaper(){
