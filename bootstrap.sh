@@ -38,10 +38,10 @@ declare -a deb_custom_pkgs=(
   "xorg i3 i3blocks kitty lightdm rofi feh"
   
   # Common Apps
-  "vlc transmission audacity"
+  "vlc transmission audacity firefox-esr"
   
-  # Reverse engineering
-  "binwalk gdb radare2 flashrom"
+  # Reverse engineering TODO: Find a radare2 replacement install
+  "binwalk gdb flashrom"
   
   # Fuzzing, etc.
   "afl hashcat zzuf"
