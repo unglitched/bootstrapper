@@ -41,7 +41,7 @@ declare -a deb_custom_pkgs=(
   "vlc transmission audacity firefox-esr"
   
   # Reverse engineering TODO: Find a radare2 replacement install
-  "binwalk gdb flashrom"
+  "binwalk gdb flashrom jsbeautifier"
   
   # Fuzzing, etc.
   "afl hashcat zzuf"
