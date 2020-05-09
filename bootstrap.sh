@@ -127,14 +127,6 @@ debian_install() {
   wget -qO /tmp/bat.deb "https://github.com/sharkdp/bat/releases/download/v0.12.1/bat_0.12.1_amd64.deb"
   dpkg -i /tmp/bat.deb
   
-  # WTFUtil
-  # On version 0.25
-  rulem "Installing WTFUtil"
-  wget -qO /tmp/wtf.tar.gz "https://github.com/wtfutil/wtf/releases/download/v0.25.0/wtf_0.25.0_linux_amd64.tar.gz"
-  tar -xzf /tmp/wtf.tar.gz -C /tmp/
-  chmod +x /tmp/wtf_0.25.0_linux_amd64/wtfutil
-  mv /tmp/wtf_0.25.0_linux_amd64/wtfutil /usr/local/bin/
-  
   # Etc
   updatedb > /dev/null
   # Vim Plug
