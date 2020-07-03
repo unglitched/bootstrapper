@@ -38,7 +38,7 @@ declare -a deb_custom_pkgs=(
   "xorg i3 i3blocks kitty lightdm rofi feh"
   
   # Common Apps
-  "vlc transmission audacity firefox-esr"
+  "vlc transmission audacity firefox-esr docker.io"
   
   # Reverse engineering TODO: Find a radare2 replacement install
   "binwalk gdb flashrom jsbeautifier"
