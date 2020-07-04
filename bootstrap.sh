@@ -33,18 +33,16 @@ error() { printf "$@\n" >&2; exit 1; }
 try() { "$1" || error "Failure at $1"; }
 distro() { [[ $(cat /etc/*-release | grep -w NAME | cut -d= -f2 | tr -d '"') == *$1* ]]; }
 
-
+### Variables (Edit these!) ###
 dotfile_repo="https://www.github.com/qrbounty/dotfiles.git"
 pip3_pkgs="yara pillow"
 declare -a deb_custom_pkgs=(
-  # Dependencies
-  "curl locate git python3 python3-pip suckless-tools tmux vim tree whiptail"
-  # 'Essentials'
-  "zsh highlight lolcat boxes tldr ripgrep neovim exa ranger fonts-powerline fonts-hack fonts-font-awesome"
-  # Desktop environment and apps
-  "xorg i3 i3blocks kitty lightdm rofi feh vlc transmission audacity firefox-esr docker.io"
-  # Security
-  "binwalk gdb flashrom jsbeautifier afl hashcat zzuf"
+  "curl locate git python3 python3-pip suckless-tools tmux vim tree" # Dependencies
+  "zsh highlight lolcat boxes tldr ripgrep neovim exa ranger"        # 'Essentials'
+  "fonts-powerline fonts-hack fonts-font-awesome"                    # Fonts
+  "xorg i3 i3blocks kitty lightdm rofi feh"                          # Desktop
+  "vlc transmission audacity firefox-esr docker.io"                  # Common Apps
+  "binwalk gdb flashrom jsbeautifier afl hashcat zzuf"               # Security
 )
 
 declare -a deb_installers=(
@@ -83,7 +81,7 @@ install_bat(){
 
 install_vimplug(){
   updatedb > /dev/null
-  /bin/su -c "/bin/curl -L --silent \"https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim\" --create-dirs -o  $user_home/.vim/autoload/plug.vim" - $SUDO_USER
+  /bin/su -c "/bin/curl -L --silent \"https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim\" --create-dirs -o $user_home/.vim/autoload/plug.vim" - $SUDO_USER
   /bin/su -c "vim -es -u $user_home/.vimrc -i NONE -c \"PlugInstall\" -c \"qa\""
   # TODO: Get vim +PlugInstall +qall > /dev/null working with dotfiles
 }
@@ -92,9 +90,9 @@ install_vscode(){
   curl -s https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
   install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
   sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-  apt_install "VS Code Deps" apt-transport-https
+  DEBIAN_FRONTEND=noninteractive apt-get install -qq -o=Dpkg::Use-Pty=0 apt-transport-https < /dev/null > /dev/null
   apt-get update < /dev/null > /dev/null
-  apt_install "VS Code Core" code
+  DEBIAN_FRONTEND=noninteractive apt-get install -qq -o=Dpkg::Use-Pty=0 code < /dev/null > /dev/null
   rm packages.microsoft.gpg
 }
 
@@ -131,6 +129,14 @@ debian_install() {
     apt_install "VMware" "open-vm-tools-desktop"
   fi
   echo 'exec i3' > $user_home/.xsession
+
+  # Dotfiles Install
+  if exists git; then
+    echo "Fetching Dotfiles"
+    try dotfile_copy
+  else
+    err "git not detected, cannot gather dotfiles."
+  fi
 
   # TODO: Get whiptail to work for these.
   i=1
@@ -171,13 +177,6 @@ if (whiptail --defaultno --title "QRBounty's Bootstrap Script 1.5" --yesno "$war
   # OS Install
   if distro "Debian"; then
     try debian_install
-  fi
-  # Dotfiles Install
-  if exists git; then
-    echo "Fetching Dotfiles"
-    try dotfile_copy
-  else
-    err "git not detected, cannot gather dotfiles."
   fi
   # End prompt
   if (whiptail --title "QRBounty's Bootstrap Script 1.5" --yesno "Installation has finished. Restart?" 20 60); then
