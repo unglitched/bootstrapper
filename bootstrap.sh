@@ -27,11 +27,12 @@ export NEWT_COLORS='
   fullscale=black,green
 '
 
-### User Variables - EDIT THESE! :) ###
-# dotfile_repo - Your dotfiles repository, make sure it looks like https://github.com/qrbounty/dotfiles
-# deb_apt_pkgs - The base packages you want installed using debian's apt. These will all be installed in one command.
-# pip3_pkgs    - The pip3 packages to install for Python 3. These will all be installed in one command.
-# deb_custom_pkgs - This is just a nice way to chunk up packages logically, for quicker on/off and testing.
+### Helpers / Formatters ###
+exists() { command -v "$1" >/dev/null 2>&1; }
+error() { printf "$@\n" >&2; exit 1; }
+try() { "$1" || error "Failure at $1"; }
+distro() { [[ $(cat /etc/*-release | grep -w NAME | cut -d= -f2 | tr -d '"') == *$1* ]]; }
+
 
 dotfile_repo="https://www.github.com/qrbounty/dotfiles.git"
 pip3_pkgs="yara pillow"
@@ -56,24 +57,6 @@ declare -a deb_installers=(
   "install_vimplug"
 )
 
-### Helpers / Formatters ###
-# Sources: 
-# https://brettterpstra.com/2015/02/20/shell-trick-printf-rules/
-# https://stackoverflow.com/questions/394230/how-to-detect-the-os-from-a-bash-script 
-# https://stackoverflow.com/questions/1378274/in-a-bash-script-how-can-i-exit-the-entire-script-if-a-certain-condition-occurs
-# https://stackoverflow.com/questions/592620/how-to-check-if-a-program-exists-from-a-bash-script
-exists() { command -v "$1" >/dev/null 2>&1; }
-error() { printf "$@\n" >&2; exit 1; }
-try() { "$1" || error "Failure at $1"; }
-os() { [[ $OSTYPE == *$1* ]]; }
-distro() { [[ $(cat /etc/*-release | grep -w NAME | cut -d= -f2 | tr -d '"') == *$1* ]]; }
-linux() { 
-  case "$OSTYPE" in
-    *linux*|*cygwin*) sys="gnu";;
-    *bsd*|*darwin*) sys="bsd";;
-  esac
-  [[ "${sys}" == "$1" ]];
-}
 
 
 ### Installers ###
@@ -134,10 +117,10 @@ random_wallpaper(){
 }
 
 debian_install() {
-  # Apt stuff, desktop environment
   debconf-apt-progress -- apt-get update
   debconf-apt-progress -- apt-get upgrade -y
   
+  # TODO: Merge these in the end so they're all a single command.
   for package in "${deb_custom_pkgs[@]}"; do
     apt_install "custom" "$package"
   done
@@ -147,12 +130,15 @@ debian_install() {
   fi
   echo 'exec i3' > $user_home/.xsession
 
-  i=0
-  { for installer in "${deb_installers[@]}"; do
-    clear
-    ((i++))
+  # TODO: Get whiptail to work for these.
+  i=1
+  clear
+  echo "=== Customizing Install ==="
+  for installer in "${deb_installers[@]}"; do
+    echo -e "Stage $i/${#deb_installers[@]}: $installer"
     try $installer
-  done } | whiptail --gauge "Running $installer ..." 6 50 $(expr $i \* 100 / ${#deb_installers[@]})
+    ((i++))
+  done
 }
 
 ### Dotfile Fetch/Setup ###
@@ -180,23 +166,22 @@ dotfile_copy(){
 warning="WARNING! WARNING! WARNING!\n\nThis is for a FRESHLY INSTALLED system only!\nAre you sure you want to run this?\n\nWARNING! WARNING! WARNING!"
 if (whiptail --defaultno --title "QRBounty's Bootstrap Script 1.5" --yesno "$warning" 15 50); then
   clear
-  if linux gnu; then
-    if distro "Debian"; then
-      try debian_install
-    fi
-    if exists git; then
-      echo "Fetching Dotfiles"
-      try dotfile_copy
-    else
-      err "git not detected, cannot gather dotfiles."
-    fi
-    if (whiptail --title "QRBounty's Bootstrap Script 1.5" --yesno "Installation has finished. Restart?" 20 60); then
-      reboot
-    else
-      exit
-    fi
+  # OS Install
+  if distro "Debian"; then
+    try debian_install
+  fi
+  # Dotfiles Install
+  if exists git; then
+    echo "Fetching Dotfiles"
+    try dotfile_copy
   else
-    echo "No supported OS found"
+    err "git not detected, cannot gather dotfiles."
+  fi
+  # End prompt
+  if (whiptail --title "QRBounty's Bootstrap Script 1.5" --yesno "Installation has finished. Restart?" 20 60); then
+    reboot
+  else
+    exit
   fi
 else
   exit
