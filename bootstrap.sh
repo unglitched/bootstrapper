@@ -170,59 +170,37 @@ dotfile_copy(){
   chmod +x $user_home/.config/shell/motd.sh
 }
 
-###  Main  ###
-rule "-"
-printf "QRBounty's System Bootstrap Script Version 1.4\n"
-rule "-"
-
-printf "\n"
-rulem "!!!WARNING!!!" "#"
-printf "\nWARNING: THIS WILL OVERWRITE LOCAL FILES!\nThis is for FRESHLY INSTALLED systems only!\n\n"
-rule "#"
-
-echo "Really continue?"
-select yn in "Yes" "No"; do
-    case $yn in
-        Yes ) break;;
-        No ) exit;;
-    esac
-done
-
-
-if os darwin; then
-  if ! exists brew; then
-    echo "Brew installed... This is where I would install other programs, IF I HAD ANY!"
-  else
-    echo "Installing Brew..."
-  fi 
-elif linux gnu; then
-  if distro "Debian"; then
-    rulem "Debian Customization" "~"
-    rulem "Installing Debian software" 
-    try debian_install
-    rulem "Installing pip3 packages" 
-    try pip3_install
-    rulem "Getting random starter wallpaper"
-    try random_wallpaper
+# Main
+warning="WARNING! WARNING! WARNING!\n\nThis is for a FRESHLY INSTALLED system only!\n\nAre you sure you want to run this?"
+if (whiptail --title "QRBounty's Bootstrap Script 1.5" --yesno "$warning" 20 60); then
+  echo "User selected Yes, exit status was $?."
+  if linux gnu; then
+    if distro "Debian"; then
+      rulem "Debian Customization" "~"
+      rulem "Installing Debian software" 
+      try debian_install
+      rulem "Installing pip3 packages" 
+      try pip3_install
+      rulem "Getting random starter wallpaper"
+      try random_wallpaper
+    fi
+    if exists git; then
+      rulem "Fetching Dotfiles" "~"
+      try dotfile_copy
+    else
+      err "git not detected, cannot gather dotfiles."
+    fi
   fi
-  if distro "Kali"; then
-    rulem "Kali Customization" "~"
-  fi
-  if exists git; then
-    rulem "Fetching Dotfiles" "~"
-    try dotfile_copy
-  else
-    err "git not detected, cannot gather dotfiles."
-  fi
+else
+  exit
 fi
 
-rule "~"
-echo "Installation has finished. Restart system?"
-rule "~"
 
-select yn in "Yes" "No"; do
-    case $yn in
-        Yes ) reboot;;
-        No ) exit;;
-    esac
-done
+
+
+# Easy whiptail replacement.
+if (whiptail --title "QRBounty's Bootstrap Script 1.5" --yesno "Installation has finished. Restart?" 20 60); then
+  reboot
+else:
+  exit
+fi
