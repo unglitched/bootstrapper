@@ -53,6 +53,8 @@ declare -a deb_installers=(
   "install_bat"
   "install_vimplug"
   "install_p10kfonts"
+  "pip3_install"
+  "random_wallpaper"
 )
 ### Helpers / Formatters ###
 # Sources: 
@@ -60,7 +62,6 @@ declare -a deb_installers=(
 # https://stackoverflow.com/questions/394230/how-to-detect-the-os-from-a-bash-script 
 # https://stackoverflow.com/questions/1378274/in-a-bash-script-how-can-i-exit-the-entire-script-if-a-certain-condition-occurs
 # https://stackoverflow.com/questions/592620/how-to-check-if-a-program-exists-from-a-bash-script
-rulem() { whiptail --gauge $1 4 50 $2; }
 exists() { command -v "$1" >/dev/null 2>&1; }
 error() { printf "$@\n" >&2; exit 1; }
 try() { "$1" || error "Failure at $1"; }
@@ -93,7 +94,7 @@ debian_install() {
   echo 'exec i3' > $user_home/.xsession
   i=0
   for installer in "${deb_installers[@]}"; do
-    `installer`
+    try $installer
     expr i * 100 / ${#deb_installers[@]}
   done | whiptail --gauge "Running $installer..." 6 50 0
 }
@@ -119,7 +120,6 @@ configure_lightdm(){
 install_bat(){
   # https://github.com/sharkdp/bat/
   # On version 0.15.4 until it's officially supported in Debian...
-  rulem "Installing bat"
   wget -qO /tmp/bat.deb "https://github.com/sharkdp/bat/releases/download/v0.15.4/bat_0.15.4_amd64.deb"
   dpkg -i /tmp/bat.deb
 }
@@ -184,13 +184,9 @@ if (whiptail --title "QRBounty's Bootstrap Script 1.5" --yesno "$warning" 15 50)
   if linux gnu; then
     if distro "Debian"; then
       try debian_install
-      rulem "Installing pip3 packages"
-      try pip3_install
-      rulem "Getting random starter wallpaper"
-      try random_wallpaper
     fi
     if exists git; then
-      rulem "Fetching Dotfiles"
+      echo "Fetching Dotfiles"
       try dotfile_copy
     else
       err "git not detected, cannot gather dotfiles."
