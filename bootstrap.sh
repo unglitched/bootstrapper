@@ -70,7 +70,7 @@ linux() {
 
 apt_install() {
   echo "Installing $1 package set (contains: $2) ... "
-  debconf-apt-progress -- aptitude -y install $2
+  debconf-apt-progress -- apt-get install -qq -y -o=Dpkg::Use-Pty=0 install $2
   #DEBIAN_FRONTEND=noninteractive apt-get install -qq -o=Dpkg::Use-Pty=0 $2 < /dev/null > /dev/null
 }
 
