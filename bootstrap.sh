@@ -22,29 +22,16 @@ user_home=$(getent passwd $SUDO_USER | cut -d: -f6)
 # deb_custom_pkgs - This is just a nice way to chunk up packages logically, for quicker on/off and testing.
 
 dotfile_repo="https://www.github.com/qrbounty/dotfiles.git"
-deb_apt_pkgs="curl locate git python3 python3-pip suckless-tools tmux vim tree whiptail debconf-apt-progress"
 pip3_pkgs="yara pillow"
 declare -a deb_custom_pkgs=(
-  # Terminal stuff
-  "zsh highlight lolcat boxes"
-
-  # "Modern" Terminal Apps
-  "tldr ripgrep neovim exa ranger"
-  
-  # "Essential" Fonts
-  "fonts-powerline fonts-hack fonts-font-awesome"
-
-  # Desktop environment
-  "xorg i3 i3blocks kitty lightdm rofi feh"
-  
-  # Common Apps
-  "vlc transmission audacity firefox-esr docker.io"
-  
-  # Reverse engineering TODO: Find a radare2 replacement install
-  "binwalk gdb flashrom jsbeautifier"
-  
-  # Fuzzing, etc.
-  "afl hashcat zzuf"
+  # Dependencies
+  "curl locate git python3 python3-pip suckless-tools tmux vim tree whiptail debconf-apt-progress"
+  # 'Essentials'
+  "zsh highlight lolcat boxes tldr ripgrep neovim exa ranger fonts-powerline fonts-hack fonts-font-awesome"
+  # Desktop environment and apps
+  "xorg i3 i3blocks kitty lightdm rofi feh vlc transmission audacity firefox-esr docker.io"
+  # Security
+  "binwalk gdb flashrom jsbeautifier afl hashcat zzuf"
 )
 
 
@@ -69,20 +56,13 @@ linux() {
   [[ "${sys}" == "$1" ]];
 }
 
-apt_install() {
-  #echo "Installing $1 package set (contains: $2) ... "
-  debconf-apt-progress -- apt-get install -qq -y -o=Dpkg::Use-Pty=0 $2
-  #DEBIAN_FRONTEND=noninteractive apt-get install -qq -o=Dpkg::Use-Pty=0 $2 < /dev/null > /dev/null
-}
-
-### Installer Functions ###
+apt_install() { debconf-apt-progress -- apt-get install -qq -y -o=Dpkg::Use-Pty=0 $2; }
 pip3_install() { pip3 -q install $pip3_pkgs; < /dev/null > /dev/null && echo "Installed!"; }
 
 debian_install() {
   # Apt stuff, desktop environment
   debconf-apt-progress -- apt-get update
   debconf-apt-progress -- apt-get upgrade -y
-  apt_install "base" "$deb_apt_pkgs"
   
   for package in "${deb_custom_pkgs[@]}"; do
     apt_install "custom" "$package"
@@ -91,7 +71,6 @@ debian_install() {
   if dmidecode -s system-manufacturer = "VMware, Inc."; then
     apt_install "VMware" "open-vm-tools-desktop"
   fi
-  clear
   echo 'exec i3' > $user_home/.xsession
   
   # Lightdm config
@@ -179,8 +158,6 @@ if (whiptail --title "QRBounty's Bootstrap Script 1.5" --yesno "$warning" 20 60)
   clear
   if linux gnu; then
     if distro "Debian"; then
-      rulem "Debian Customization" "~"
-      rulem "Installing Debian software" 
       try debian_install
       rulem "Installing pip3 packages" 
       try pip3_install
