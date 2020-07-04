@@ -46,7 +46,14 @@ declare -a deb_custom_pkgs=(
   "binwalk gdb flashrom jsbeautifier afl hashcat zzuf"
 )
 
-
+declare -a deb_installers=(
+  "configure_lightdm"
+  "install_zsh"
+  "install_vscode"
+  "install_bat"
+  "install_vimplug"
+  "install_p10kfonts"
+)
 ### Helpers / Formatters ###
 # Sources: 
 # https://brettterpstra.com/2015/02/20/shell-trick-printf-rules/
@@ -82,57 +89,13 @@ debian_install() {
   if dmidecode -s system-manufacturer = "VMware, Inc."; then
     apt_install "VMware" "open-vm-tools-desktop"
   fi
+  
   echo 'exec i3' > $user_home/.xsession
-  
-  # Lightdm config
-  # looking for a clever hack to avoid the prompt, however: https://bugs.launchpad.net/ubuntu/+source/gdm3/+bug/1616905
-  rulem "Configuring lightdm" 0
-  echo lightdm shared/default-x-display-manager select lightdm | sudo debconf-set-selections -v
-  # echo "set shared/default-x-display-manager lightdm" | debconf-communicate
-  echo "background = #212121" >> /etc/lightdm/lightdm-gtk-greeter.conf
-  echo "theme-name = Adwaita-dark" >> /etc/lightdm/lightdm-gtk-greeter.conf
-  echo "font-name = Hack" >> /etc/lightdm/lightdm-gtk-greeter.conf
-  echo "hide-user-image = true" >> /etc/lightdm/lightdm-gtk-greeter.conf
-  #sudo echo "/usr/sbin/lightdm" > /etc/X11/default-display-manager
-  dpkg-reconfigure lightdm 
-  
-  # Zsh install
-  rulem "Installing Oh My Zsh" 10
-  /bin/su -c "wget -q https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O - | sh > /dev/null" - $SUDO_USER
-  cp $user_home/.oh-my-zsh/templates/zshrc.zsh-template $user_home/.zshrc
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $user_home/.oh-my-zsh/custom/themes/powerlevel10k
-  # TODO: Meslo font for p10k. See https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k
-  chsh -s /bin/zsh $SUDO_USER
-  
-  # VS Code install
-  rulem "Installing VS Code" 20
-  curl -s https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-  install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
-  sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-  apt_install "VS Code Deps" apt-transport-https
-  apt-get update < /dev/null > /dev/null
-  apt_install "VS Code Core" code
-  rm packages.microsoft.gpg
-  
-  # bat - https://github.com/sharkdp/bat/
-  # On version 0.12.1 until it's officially supported in Debian...
-  rulem "Installing bat" 30
-  wget -qO /tmp/bat.deb "https://github.com/sharkdp/bat/releases/download/v0.12.1/bat_0.12.1_amd64.deb"
-  dpkg -i /tmp/bat.deb
-  
-  # Etc
-  updatedb > /dev/null
-  # Vim Plug
-  rulem "Installing Vim Plug" 40
-  /bin/su -c "/bin/curl -L \"https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim\" --create-dirs -o  $user_home/.vim/autoload/plug.vim" - $SUDO_USER
-  /bin/su -c "vim -es -u $user_home/.vimrc -i NONE -c \"PlugInstall\" -c \"qa\""
-  # TODO: Get vim +PlugInstall +qall > /dev/null working with dotfiles
-  #P10k Fonts
-  /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Regular.ttf" - $SUDO_USER
-  /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Bold.ttf" - $SUDO_USER
-  /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20bold%20Italic.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Bold-Italic.ttf" - $SUDO_USER
-  /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Italic.ttf" - $SUDO_USER
-
+  i=0
+  for installer in "${deb_installers[@]}"; do
+    `installer`
+    expr i * 100 / ${#deb_installers[@]}
+  done | whiptail --gauge "Running $installer..." 6 50 0
 }
 
 random_wallpaper(){
@@ -142,6 +105,56 @@ random_wallpaper(){
   /bin/su -c "/bin/curl -L \"https://picsum.photos/$width/$height/\" --create-dirs -o $user_home/Pictures/Wallpapers/starter.jpg" - $SUDO_USER
 }
 
+configure_lightdm(){
+  echo lightdm shared/default-x-display-manager select lightdm | sudo debconf-set-selections -v
+  # echo "set shared/default-x-display-manager lightdm" | debconf-communicate
+  echo "background = #212121" >> /etc/lightdm/lightdm-gtk-greeter.conf
+  echo "theme-name = Adwaita-dark" >> /etc/lightdm/lightdm-gtk-greeter.conf
+  echo "font-name = Hack" >> /etc/lightdm/lightdm-gtk-greeter.conf
+  echo "hide-user-image = true" >> /etc/lightdm/lightdm-gtk-greeter.conf
+  #sudo echo "/usr/sbin/lightdm" > /etc/X11/default-display-manager
+  dpkg-reconfigure lightdm 
+}
+
+install_bat(){
+  # https://github.com/sharkdp/bat/
+  # On version 0.15.4 until it's officially supported in Debian...
+  rulem "Installing bat"
+  wget -qO /tmp/bat.deb "https://github.com/sharkdp/bat/releases/download/v0.15.4/bat_0.15.4_amd64.deb"
+  dpkg -i /tmp/bat.deb
+}
+
+install_p10kfonts(){
+  /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Regular.ttf" - $SUDO_USER
+  /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Bold.ttf" - $SUDO_USER
+  /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20bold%20Italic.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Bold-Italic.ttf" - $SUDO_USER
+  /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Italic.ttf" - $SUDO_USER
+}
+
+install_vimplug(){
+  updatedb > /dev/null
+  /bin/su -c "/bin/curl -L \"https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim\" --create-dirs -o  $user_home/.vim/autoload/plug.vim" - $SUDO_USER
+  /bin/su -c "vim -es -u $user_home/.vimrc -i NONE -c \"PlugInstall\" -c \"qa\""
+  # TODO: Get vim +PlugInstall +qall > /dev/null working with dotfiles
+}
+
+install_vscode(){
+  curl -s https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+  install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
+  sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
+  apt_install "VS Code Deps" apt-transport-https
+  apt-get update < /dev/null > /dev/null
+  apt_install "VS Code Core" code
+  rm packages.microsoft.gpg
+}
+
+install_zsh(){
+  /bin/su -c "wget -q https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O - | sh > /dev/null" - $SUDO_USER
+  cp $user_home/.oh-my-zsh/templates/zshrc.zsh-template $user_home/.zshrc
+  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $user_home/.oh-my-zsh/custom/themes/powerlevel10k
+  # TODO: Meslo font for p10k. See https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k
+  chsh -s /bin/zsh $SUDO_USER
+}
 
 ### Dotfile Fetch/Setup ###
 # TODO: Make this cleaner.
@@ -171,13 +184,13 @@ if (whiptail --title "QRBounty's Bootstrap Script 1.5" --yesno "$warning" 15 50)
   if linux gnu; then
     if distro "Debian"; then
       try debian_install
-      rulem "Installing pip3 packages" 50
+      rulem "Installing pip3 packages"
       try pip3_install
-      rulem "Getting random starter wallpaper" 70
+      rulem "Getting random starter wallpaper"
       try random_wallpaper
     fi
     if exists git; then
-      rulem "Fetching Dotfiles" 80
+      rulem "Fetching Dotfiles"
       try dotfile_copy
     else
       err "git not detected, cannot gather dotfiles."
