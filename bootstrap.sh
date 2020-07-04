@@ -47,13 +47,13 @@ declare -a deb_custom_pkgs=(
 )
 
 declare -a deb_installers=(
+  "pip3_install"
   "configure_lightdm"
   "install_zsh"
   "install_vscode"
   "install_bat"
-  "install_vimplug"
-  "pip3_install"
   "random_wallpaper"
+  "install_vimplug"
 )
 
 ### Helpers / Formatters ###
@@ -100,7 +100,7 @@ install_bat(){
 
 install_vimplug(){
   updatedb > /dev/null
-  /bin/su -c "/bin/curl --silent -L \"https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim\" --create-dirs -o  $user_home/.vim/autoload/plug.vim" - $SUDO_USER
+  /bin/su -c "/bin/curl -L --silent \"https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim\" --create-dirs -o  $user_home/.vim/autoload/plug.vim" - $SUDO_USER
   /bin/su -c "vim -es -u $user_home/.vimrc -i NONE -c \"PlugInstall\" -c \"qa\""
   # TODO: Get vim +PlugInstall +qall > /dev/null working with dotfiles
 }
@@ -145,11 +145,11 @@ debian_install() {
   if dmidecode -s system-manufacturer = "VMware, Inc."; then
     apt_install "VMware" "open-vm-tools-desktop"
   fi
-  
   echo 'exec i3' > $user_home/.xsession
-  clear
-  i=0
+
+i=0
   for installer in "${deb_installers[@]}"; do
+    clear
     percent=$(expr i \* 100 / ${#deb_installers[@]})
     whiptail --gauge "Executing: $installer..." 6 50 $percent
     ((i++))
