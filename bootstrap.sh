@@ -147,13 +147,12 @@ debian_install() {
   fi
   echo 'exec i3' > $user_home/.xsession
 
-i=0
-  for installer in "${deb_installers[@]}"; do
+  i=0
+  { for installer in "${deb_installers[@]}"; do
     clear
-    whiptail --gauge "Running $installer ..." 6 50 $(expr i \* 100 / ${#deb_installers[@]})
     ((i++))
     try $installer
-  done
+  done } | whiptail --gauge "Running $installer ..." 6 50 $(expr $i \* 100 / ${#deb_installers[@]})
 }
 
 ### Dotfile Fetch/Setup ###
@@ -179,7 +178,7 @@ dotfile_copy(){
 
 # Main
 warning="WARNING! WARNING! WARNING!\n\nThis is for a FRESHLY INSTALLED system only!\nAre you sure you want to run this?\n\nWARNING! WARNING! WARNING!"
-if (whiptail --title "QRBounty's Bootstrap Script 1.5" --yesno "$warning" 15 50); then
+if (whiptail --defaultno --title "QRBounty's Bootstrap Script 1.5" --yesno "$warning" 15 50); then
   clear
   if linux gnu; then
     if distro "Debian"; then
