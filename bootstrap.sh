@@ -80,13 +80,14 @@ install_bat(){
 }
 
 install_vimplug(){
+  # TODO: Get vim +PlugInstall +qall > /dev/null working with dotfiles
   updatedb > /dev/null
   /bin/su -c "/bin/curl -L --silent \"https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim\" --create-dirs -o $user_home/.vim/autoload/plug.vim" - $SUDO_USER
   /bin/su -c "vim -es -u $user_home/.vimrc -i NONE -c \"PlugInstall\" -c \"qa\""
-  # TODO: Get vim +PlugInstall +qall > /dev/null working with dotfiles
 }
 
 install_vscode(){
+  # TODO: Fix. Seems to be a key issue?
   curl -s https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
   install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
   sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
@@ -98,7 +99,7 @@ install_vscode(){
 
 install_zsh(){
   /bin/su -c "wget -q https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O - | sh > /dev/null" - $SUDO_USER
-  cp $user_home/.oh-my-zsh/templates/zshrc.zsh-template $user_home/.zshrc
+  #cp $user_home/.oh-my-zsh/templates/zshrc.zsh-template $user_home/.zshrc
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $user_home/.oh-my-zsh/custom/themes/powerlevel10k
   /bin/su -c "/bin/curl --silent -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Regular.ttf" - $SUDO_USER
   /bin/su -c "/bin/curl --silent -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Bold.ttf" - $SUDO_USER
