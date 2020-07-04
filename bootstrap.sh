@@ -2,7 +2,6 @@
 #
 # This is a setup script for my systems.
 #
-# TODO: OSX install tasks
 # TODO: Add dry run functionality
 # TODO: Replace wget calls with curl
 # TODO: Get copy/paste working between host and guest for VMWare installs.
@@ -190,17 +189,12 @@ if (whiptail --title "QRBounty's Bootstrap Script 1.5" --yesno "$warning" 20 60)
     else
       err "git not detected, cannot gather dotfiles."
     fi
+    if (whiptail --title "QRBounty's Bootstrap Script 1.5" --yesno "Installation has finished. Restart?" 20 60); then
+      reboot
+    else:
+      exit
+    fi
   fi
 else
-  exit
-fi
-
-
-
-
-# Easy whiptail replacement.
-if (whiptail --title "QRBounty's Bootstrap Script 1.5" --yesno "Installation has finished. Restart?" 20 60); then
-  reboot
-else:
   exit
 fi
