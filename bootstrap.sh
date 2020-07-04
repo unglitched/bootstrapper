@@ -14,6 +14,18 @@ if [ "$EUID" -ne 0 ]
 fi
 user_home=$(getent passwd $SUDO_USER | cut -d: -f6)
 
+export NEWT_COLORS='
+  root=white,black
+  roottext=black,black
+  window=green,black
+  border=green,black
+  textbox=green,black
+  button=black,green
+  label=green,black
+  title=green,black
+  emptyscale=black,lightgray
+  fullscale=black,green
+'
 
 ### User Variables - EDIT THESE! :) ###
 # dotfile_repo - Your dotfiles repository, make sure it looks like https://github.com/qrbounty/dotfiles
@@ -25,7 +37,7 @@ dotfile_repo="https://www.github.com/qrbounty/dotfiles.git"
 pip3_pkgs="yara pillow"
 declare -a deb_custom_pkgs=(
   # Dependencies
-  "curl locate git python3 python3-pip suckless-tools tmux vim tree whiptail debconf-apt-progress"
+  "curl locate git python3 python3-pip suckless-tools tmux vim tree whiptail"
   # 'Essentials'
   "zsh highlight lolcat boxes tldr ripgrep neovim exa ranger fonts-powerline fonts-hack fonts-font-awesome"
   # Desktop environment and apps
@@ -41,8 +53,7 @@ declare -a deb_custom_pkgs=(
 # https://stackoverflow.com/questions/394230/how-to-detect-the-os-from-a-bash-script 
 # https://stackoverflow.com/questions/1378274/in-a-bash-script-how-can-i-exit-the-entire-script-if-a-certain-condition-occurs
 # https://stackoverflow.com/questions/592620/how-to-check-if-a-program-exists-from-a-bash-script
-rule() { printf -v _hr "%*s" $(tput cols) && echo ${_hr// /${1--}}; }
-rulem() { printf -v _hr "%*s" $(tput cols) && echo -en ${_hr// /${2--}} && echo -e "\r\033[2C$1"; }
+rulem() { whiptail --gauge $1 4 50 $2; }
 exists() { command -v "$1" >/dev/null 2>&1; }
 error() { printf "$@\n" >&2; exit 1; }
 try() { "$1" || error "Failure at $1"; }
@@ -75,7 +86,7 @@ debian_install() {
   
   # Lightdm config
   # looking for a clever hack to avoid the prompt, however: https://bugs.launchpad.net/ubuntu/+source/gdm3/+bug/1616905
-  rulem "Configuring lightdm"
+  rulem "Configuring lightdm" 0
   echo lightdm shared/default-x-display-manager select lightdm | sudo debconf-set-selections -v
   # echo "set shared/default-x-display-manager lightdm" | debconf-communicate
   echo "background = #212121" >> /etc/lightdm/lightdm-gtk-greeter.conf
@@ -86,7 +97,7 @@ debian_install() {
   dpkg-reconfigure lightdm 
   
   # Zsh install
-  rulem "Installing Oh My Zsh"
+  rulem "Installing Oh My Zsh" 10
   /bin/su -c "wget -q https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O - | sh > /dev/null" - $SUDO_USER
   cp $user_home/.oh-my-zsh/templates/zshrc.zsh-template $user_home/.zshrc
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $user_home/.oh-my-zsh/custom/themes/powerlevel10k
@@ -94,7 +105,7 @@ debian_install() {
   chsh -s /bin/zsh $SUDO_USER
   
   # VS Code install
-  rulem "Installing VS Code"
+  rulem "Installing VS Code" 20
   curl -s https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
   install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
   sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
@@ -105,13 +116,14 @@ debian_install() {
   
   # bat - https://github.com/sharkdp/bat/
   # On version 0.12.1 until it's officially supported in Debian...
-  rulem "Installing bat"
+  rulem "Installing bat" 30
   wget -qO /tmp/bat.deb "https://github.com/sharkdp/bat/releases/download/v0.12.1/bat_0.12.1_amd64.deb"
   dpkg -i /tmp/bat.deb
   
   # Etc
   updatedb > /dev/null
   # Vim Plug
+  rulem "Installing Vim Plug" 40
   /bin/su -c "/bin/curl -L \"https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim\" --create-dirs -o  $user_home/.vim/autoload/plug.vim" - $SUDO_USER
   /bin/su -c "vim -es -u $user_home/.vimrc -i NONE -c \"PlugInstall\" -c \"qa\""
   # TODO: Get vim +PlugInstall +qall > /dev/null working with dotfiles
@@ -159,13 +171,13 @@ if (whiptail --title "QRBounty's Bootstrap Script 1.5" --yesno "$warning" 20 60)
   if linux gnu; then
     if distro "Debian"; then
       try debian_install
-      rulem "Installing pip3 packages" 
+      rulem "Installing pip3 packages" 50
       try pip3_install
-      rulem "Getting random starter wallpaper"
+      rulem "Getting random starter wallpaper" 70
       try random_wallpaper
     fi
     if exists git; then
-      rulem "Fetching Dotfiles" "~"
+      rulem "Fetching Dotfiles" 80
       try dotfile_copy
     else
       err "git not detected, cannot gather dotfiles."
