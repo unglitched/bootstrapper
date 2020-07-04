@@ -100,7 +100,7 @@ install_vscode(){
 install_zsh(){
   /bin/su -c "wget -q https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O - | sh > /dev/null" - $SUDO_USER
   #cp $user_home/.oh-my-zsh/templates/zshrc.zsh-template $user_home/.zshrc
-  git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $user_home/.oh-my-zsh/custom/themes/powerlevel10k
+  git clone --quiet --depth=1 https://github.com/romkatv/powerlevel10k.git $user_home/.oh-my-zsh/custom/themes/powerlevel10k
   /bin/su -c "/bin/curl --silent -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Regular.ttf" - $SUDO_USER
   /bin/su -c "/bin/curl --silent -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Bold.ttf" - $SUDO_USER
   /bin/su -c "/bin/curl --silent -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20bold%20Italic.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Bold-Italic.ttf" - $SUDO_USER
@@ -131,6 +131,7 @@ debian_install() {
   fi
   echo 'exec i3' > $user_home/.xsession
 
+  clear
   # Dotfiles Install
   if exists git; then
     echo "Fetching Dotfiles"
@@ -141,7 +142,6 @@ debian_install() {
 
   # TODO: Get whiptail to work for these.
   i=1
-  clear
   echo "=== Customizing Install ==="
   for installer in "${deb_installers[@]}"; do
     echo -e "Stage $i/${#deb_installers[@]}: $installer"
@@ -155,19 +155,19 @@ debian_install() {
 config(){ /usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home $@; }
 dotfile_copy(){
   [ ! -d "$user_home/.cfg" ] && /bin/su -c "mkdir $user_home/.cfg" - $SUDO_USER
-  /bin/su -c "git clone --bare $dotfile_repo $user_home/.cfg" - $SUDO_USER
+  /bin/su -c "/usr/bin/git clone --quiet --bare $dotfile_repo $user_home/.cfg" - $SUDO_USER
   [ ! -d "$user_home/.config-backup" ] && /bin/su -c "mkdir -p .config-backup" - $SUDO_USER
-  /bin/su -c "/usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home checkout -f" - $SUDO_USER
+  /bin/su -c "/usr/bin/git --quiet --git-dir=$user_home/.cfg/ --work-tree=$user_home checkout -f" - $SUDO_USER
   if [ $? = 0 ]; then
     echo "Checked out config.";
   else
     echo "Backing up pre-existing dot files.";
-    /bin/su -c "/usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home checkout" - $SUDO_USER 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv $user_home/{} $user_home/.config-backup/{}
+    /bin/su -c "/usr/bin/git ---quiet -git-dir=$user_home/.cfg/ --work-tree=$user_home checkout" - $SUDO_USER 2>&1 | egrep "\s+\." | awk {'print $1'} | xargs -I{} mv $user_home/{} $user_home/.config-backup/{}
   fi;
-  /bin/su -c "/usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home checkout" - $SUDO_USER
-  /bin/su -c "/usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home config status.showUntrackedFiles no" - $SUDO_USER
+  /bin/su -c "/usr/bin/git --quiet --git-dir=$user_home/.cfg/ --work-tree=$user_home checkout" - $SUDO_USER
+  /bin/su -c "/usr/bin/git --quiet --git-dir=$user_home/.cfg/ --work-tree=$user_home config status.showUntrackedFiles no" - $SUDO_USER
   echo "Copied these dotfiles from $dotfile_repo :"
-  /usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home ls-files
+  /usr/bin/git --quiet --git-dir=$user_home/.cfg/ --work-tree=$user_home ls-files
   chmod +x $user_home/.config/shell/motd.sh
 }
 
