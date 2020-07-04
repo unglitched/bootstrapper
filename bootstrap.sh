@@ -98,6 +98,7 @@ install_vscode(){
 }
 
 install_zsh(){
+  #TODO: Get .zshrc from dotfiles
   /bin/su -c "wget -q https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O - | sh > /dev/null" - $SUDO_USER
   #cp $user_home/.oh-my-zsh/templates/zshrc.zsh-template $user_home/.zshrc
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $user_home/.oh-my-zsh/custom/themes/powerlevel10k
