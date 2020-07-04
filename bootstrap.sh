@@ -95,7 +95,7 @@ debian_install() {
   i=0
   for installer in "${deb_installers[@]}"; do
     try $installer
-    expr i * 100 / ${#deb_installers[@]}
+    echo $(expr i \* 100 / ${#deb_installers[@]})
   done | whiptail --gauge "Running $installer..." 6 50 0
 }
 
