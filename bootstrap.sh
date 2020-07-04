@@ -150,8 +150,7 @@ debian_install() {
 i=0
   for installer in "${deb_installers[@]}"; do
     clear
-    percent=$(expr i \* 100 / ${#deb_installers[@]})
-    whiptail --gauge "Executing: $installer..." 6 50 $percent
+    whiptail --gauge "Running $installer ..." 6 50 $(expr i \* 100 / ${#deb_installers[@]})
     ((i++))
     try $installer
   done
