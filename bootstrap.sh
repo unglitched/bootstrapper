@@ -69,8 +69,8 @@ linux() {
 }
 
 apt_install() {
-  echo "Installing $1 package set (contains: $2) ... "
-  debconf-apt-progress -- apt-get install -qq -y -o=Dpkg::Use-Pty=0 install $2
+  #echo "Installing $1 package set (contains: $2) ... "
+  debconf-apt-progress -- apt-get install -qq -y -o=Dpkg::Use-Pty=0 $2
   #DEBIAN_FRONTEND=noninteractive apt-get install -qq -o=Dpkg::Use-Pty=0 $2 < /dev/null > /dev/null
 }
 
@@ -79,7 +79,8 @@ pip3_install() { pip3 -q install $pip3_pkgs; < /dev/null > /dev/null && echo "In
 
 debian_install() {
   # Apt stuff, desktop environment
-  apt-get update < /dev/null > /dev/null
+  debconf-apt-progress -- apt-get update
+  debconf-apt-progress -- apt-get upgrade -y
   apt_install "base" "$deb_apt_pkgs"
   
   for package in "${deb_custom_pkgs[@]}"; do
@@ -89,7 +90,7 @@ debian_install() {
   if dmidecode -s system-manufacturer = "VMware, Inc."; then
     apt_install "VMware" "open-vm-tools-desktop"
   fi
-  
+  clear
   echo 'exec i3' > $user_home/.xsession
   
   # Lightdm config
