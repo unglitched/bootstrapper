@@ -15,7 +15,7 @@ fi
 user_home=$(getent passwd $SUDO_USER | cut -d: -f6)
 
 export NEWT_COLORS='
-  root=white,black
+  root=black,black
   roottext=black,black
   window=green,black
   border=green,black
