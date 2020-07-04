@@ -67,9 +67,11 @@ linux() {
   esac
   [[ "${sys}" == "$1" ]];
 }
+
 apt_install() {
   echo "Installing $1 package set (contains: $2) ... "
-  DEBIAN_FRONTEND=noninteractive apt-get install -qq -o=Dpkg::Use-Pty=0 $2 < /dev/null > /dev/null
+  debconf-apt-progress -- aptitude -y install $2
+  #DEBIAN_FRONTEND=noninteractive apt-get install -qq -o=Dpkg::Use-Pty=0 $2 < /dev/null > /dev/null
 }
 
 ### Installer Functions ###
