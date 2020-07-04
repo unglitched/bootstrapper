@@ -170,9 +170,9 @@ dotfile_copy(){
 }
 
 # Main
-warning="WARNING! WARNING! WARNING!\n\nThis is for a FRESHLY INSTALLED system only!\n\nAre you sure you want to run this?"
+warning="WARNING! WARNING! WARNING!\n\nThis is for a FRESHLY INSTALLED system only!\nAre you sure you want to run this?\n\nWARNING! WARNING! WARNING!"
 if (whiptail --title "QRBounty's Bootstrap Script 1.5" --yesno "$warning" 20 60); then
-  echo "User selected Yes, exit status was $?."
+  clear
   if linux gnu; then
     if distro "Debian"; then
       rulem "Debian Customization" "~"
@@ -194,6 +194,8 @@ if (whiptail --title "QRBounty's Bootstrap Script 1.5" --yesno "$warning" 20 60)
     else:
       exit
     fi
+  else:
+    echo "No supported OS found"
   fi
 else
   exit
