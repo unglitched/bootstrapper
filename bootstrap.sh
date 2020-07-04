@@ -95,8 +95,9 @@ debian_install() {
   clear
   i=0
   for installer in "${deb_installers[@]}"; do
+    percent=$(expr i \* 100 / ${#deb_installers[@]})
+    whiptail --gauge "Executing: $installer..." 6 50 $percent
     try $installer
-    whiptail --gauge "Running $installer..." 6 50 $(expr i \* 100 / ${#deb_installers[@]})
   done
 }
 
@@ -104,7 +105,7 @@ random_wallpaper(){
   # Get a random wallpaper from Picsum, would be loaded by feh later in i3 cfg.
   height=1050
   width=1680
-  /bin/su -c "/bin/curl -L \"https://picsum.photos/$width/$height/\" --create-dirs -o $user_home/Pictures/Wallpapers/starter.jpg" - $SUDO_USER
+  /bin/su -c "/bin/curl --silent -L \"https://picsum.photos/$width/$height/\" --create-dirs -o $user_home/Pictures/Wallpapers/starter.jpg" - $SUDO_USER
 }
 
 configure_lightdm(){
@@ -126,15 +127,15 @@ install_bat(){
 }
 
 install_p10kfonts(){
-  /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Regular.ttf" - $SUDO_USER
-  /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Bold.ttf" - $SUDO_USER
-  /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20bold%20Italic.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Bold-Italic.ttf" - $SUDO_USER
-  /bin/su -c "/bin/curl -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Italic.ttf" - $SUDO_USER
+  /bin/su -c "/bin/curl --silent -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Regular.ttf" - $SUDO_USER
+  /bin/su -c "/bin/curl --silent -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Bold.ttf" - $SUDO_USER
+  /bin/su -c "/bin/curl --silent -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20bold%20Italic.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Bold-Italic.ttf" - $SUDO_USER
+  /bin/su -c "/bin/curl --silent -L \"https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf\" --create-dirs -o  $user_home/.fonts/Meslo-Italic.ttf" - $SUDO_USER
 }
 
 install_vimplug(){
   updatedb > /dev/null
-  /bin/su -c "/bin/curl -L \"https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim\" --create-dirs -o  $user_home/.vim/autoload/plug.vim" - $SUDO_USER
+  /bin/su -c "/bin/curl --silent -L \"https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim\" --create-dirs -o  $user_home/.vim/autoload/plug.vim" - $SUDO_USER
   /bin/su -c "vim -es -u $user_home/.vimrc -i NONE -c \"PlugInstall\" -c \"qa\""
   # TODO: Get vim +PlugInstall +qall > /dev/null working with dotfiles
 }
