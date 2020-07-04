@@ -92,11 +92,12 @@ debian_install() {
   fi
   
   echo 'exec i3' > $user_home/.xsession
+  clear
   i=0
   for installer in "${deb_installers[@]}"; do
     try $installer
-    echo $(expr i \* 100 / ${#deb_installers[@]})
-  done | whiptail --gauge "Running $installer..." 6 50 0
+    whiptail --gauge "Running $installer..." 6 50 $(expr i \* 100 / ${#deb_installers[@]})
+  done
 }
 
 random_wallpaper(){
@@ -193,10 +194,10 @@ if (whiptail --title "QRBounty's Bootstrap Script 1.5" --yesno "$warning" 15 50)
     fi
     if (whiptail --title "QRBounty's Bootstrap Script 1.5" --yesno "Installation has finished. Restart?" 20 60); then
       reboot
-    else:
+    else
       exit
     fi
-  else:
+  else
     echo "No supported OS found"
   fi
 else
