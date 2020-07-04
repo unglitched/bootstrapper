@@ -121,9 +121,11 @@ debian_install() {
   debconf-apt-progress -- apt-get upgrade -y
   
   # TODO: Merge these in the end so they're all a single command.
+  packages = ""
   for package in "${deb_custom_pkgs[@]}"; do
-    apt_install "custom" "$package"
+    packages+="${package} "
   done
+  apt_install "custom" "$packages"
   
   if dmidecode -s system-manufacturer = "VMware, Inc."; then
     apt_install "VMware" "open-vm-tools-desktop"
