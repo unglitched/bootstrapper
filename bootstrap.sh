@@ -5,6 +5,7 @@
 # TODO: Add dry run functionality
 # TODO: Replace wget calls with curl
 # TODO: Get copy/paste working between host and guest for VMWare installs.
+
 set -e
 
 if [ "$EUID" -ne 0 ]
@@ -21,7 +22,7 @@ user_home=$(getent passwd $SUDO_USER | cut -d: -f6)
 # deb_custom_pkgs - This is just a nice way to chunk up packages logically, for quicker on/off and testing.
 
 dotfile_repo="https://www.github.com/qrbounty/dotfiles.git"
-deb_apt_pkgs="curl locate git python3 python3-pip suckless-tools tmux vim tree"
+deb_apt_pkgs="curl locate git python3 python3-pip suckless-tools tmux vim tree whiptail debconf-apt-progress"
 pip3_pkgs="yara pillow"
 declare -a deb_custom_pkgs=(
   # Terminal stuff
