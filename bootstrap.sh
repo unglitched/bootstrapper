@@ -56,6 +56,7 @@ declare -a deb_installers=(
   "pip3_install"
   "random_wallpaper"
 )
+
 ### Helpers / Formatters ###
 # Sources: 
 # https://brettterpstra.com/2015/02/20/shell-trick-printf-rules/
@@ -75,38 +76,10 @@ linux() {
   [[ "${sys}" == "$1" ]];
 }
 
+
+### Installers ###
 apt_install() { debconf-apt-progress -- apt-get install -qq -y -o=Dpkg::Use-Pty=0 $2; }
 pip3_install() { pip3 -q install $pip3_pkgs; < /dev/null > /dev/null && echo "Installed!"; }
-
-debian_install() {
-  # Apt stuff, desktop environment
-  debconf-apt-progress -- apt-get update
-  debconf-apt-progress -- apt-get upgrade -y
-  
-  for package in "${deb_custom_pkgs[@]}"; do
-    apt_install "custom" "$package"
-  done
-  
-  if dmidecode -s system-manufacturer = "VMware, Inc."; then
-    apt_install "VMware" "open-vm-tools-desktop"
-  fi
-  
-  echo 'exec i3' > $user_home/.xsession
-  clear
-  i=0
-  for installer in "${deb_installers[@]}"; do
-    percent=$(expr i \* 100 / ${#deb_installers[@]})
-    whiptail --gauge "Executing: $installer..." 6 50 $percent
-    try $installer
-  done
-}
-
-random_wallpaper(){
-  # Get a random wallpaper from Picsum, would be loaded by feh later in i3 cfg.
-  height=1050
-  width=1680
-  /bin/su -c "/bin/curl --silent -L \"https://picsum.photos/$width/$height/\" --create-dirs -o $user_home/Pictures/Wallpapers/starter.jpg" - $SUDO_USER
-}
 
 configure_lightdm(){
   echo lightdm shared/default-x-display-manager select lightdm | sudo debconf-set-selections -v
@@ -156,6 +129,37 @@ install_zsh(){
   git clone --depth=1 https://github.com/romkatv/powerlevel10k.git $user_home/.oh-my-zsh/custom/themes/powerlevel10k
   # TODO: Meslo font for p10k. See https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k
   chsh -s /bin/zsh $SUDO_USER
+}
+
+random_wallpaper(){
+  # Get a random wallpaper from Picsum, would be loaded by feh later in i3 cfg.
+  height=1050
+  width=1680
+  /bin/su -c "/bin/curl --silent -L \"https://picsum.photos/$width/$height/\" --create-dirs -o $user_home/Pictures/Wallpapers/starter.jpg" - $SUDO_USER
+}
+
+debian_install() {
+  # Apt stuff, desktop environment
+  debconf-apt-progress -- apt-get update
+  debconf-apt-progress -- apt-get upgrade -y
+  
+  for package in "${deb_custom_pkgs[@]}"; do
+    apt_install "custom" "$package"
+  done
+  
+  if dmidecode -s system-manufacturer = "VMware, Inc."; then
+    apt_install "VMware" "open-vm-tools-desktop"
+  fi
+  
+  echo 'exec i3' > $user_home/.xsession
+  clear
+  i=0
+  for installer in "${deb_installers[@]}"; do
+    percent=$(expr i \* 100 / ${#deb_installers[@]})
+    whiptail --gauge "Executing: $installer..." 6 50 $percent
+    ((i++))
+    try $installer
+  done
 }
 
 ### Dotfile Fetch/Setup ###
