@@ -84,7 +84,7 @@ install_vimplug(){
   # TODO: Get vim +PlugInstall +qall > /dev/null working with dotfiles
   updatedb > /dev/null
   /bin/su -c "/bin/curl -L --silent \"https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim\" --create-dirs -o $user_home/.vim/autoload/plug.vim" - $SUDO_USER
-  /bin/su -c "vim -Es -u $user_home/.vimrc -i NONE +PlugInstall +qall"
+  /bin/su -c "vim -Es -u $user_home/.vimrc -i NONE +PlugInstall +qall" - $SUDO_USER
 }
 
 install_vscode(){
