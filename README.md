@@ -11,7 +11,7 @@ This works in tandem with my dotfiles repo when run on a new system. It will det
 ## What It Does
 Installation workflow goes like this:
 1. Check for & install apt updates
-2. Install apt relevant apt packages
+2. Install relevant apt packages
 3. Install VMware Tools, if needed.
 4. Run custom installer functions. Currently:
     * Selected Python3 packages
