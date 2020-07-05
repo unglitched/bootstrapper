@@ -190,14 +190,14 @@ debian_install() {
 # Main
 header="QRBounty's Bootstrap Script 2.0"
 logo="ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLAogICAgICAgICAgICAsLS4gICAgICAgXywtLS0uXyBfXyAgLyBcCiAgICAgICAgICAgLyAgKSAgICAuLScgICAgICAgYC4vIC8gICBcCiAgICAgICAgICAoICAoICAgLCcgICAgICAgICAgICBgLyAgICAvfAogICAgICAgICAgIFwgIGAtIiAgICAgICAgICAgICBcJ1wgICAvIHwKICAgICAgICAgICAgYC4gICAgICAgICAgICAgICwgIFwgXCAvICB8CiAgICAgICAgICAgICAvYC4gICAgICAgICAgLCctYC0tLS1ZICAgfAogICAgICAgICAgICAoICAgICAgICAgICAgOyB3YXJleiAgfCAgICcKICAgICAgICAgICAgfCAgLC0uICAgICwtJyAgICAmICAgIHwgIC8KICAgICAgICAgICAgfCAgfCAoICAgfCAgICAgc3R1ZmYgIHwgLwogICAgICAgICAgICApICB8ICBcICBgLl9fX19fX19fX19ffC8KICAgICAgICAgICAgYC0tJyAgIGAtLScKCiAgV0FSTklORyEgVGhpcyBzY3JpcHQgaXMgZm9yIGZyZXNoIHN5c3RlbXMgT05MWSEgIAogICAgICAgICAgICBEbyB5b3Ugd2FudCB0byBjb250aW51ZT8="
-if (whiptail --defaultno --title "$header" --yesno "$(echo $logo | base64 -d -)" 21 54); then
+if (whiptail --defaultno --title "$header" --yesno "$(echo $logo | base64 -d -)" 22 54); then
   clear
   # OS Install
   if distro "Debian"; then
     try debian_install
   fi
   # End prompt
-  if (whiptail --title "$header" --yesno "Installation has finished. Restart?" 20 60); then
+  if (whiptail --title "$header" --yesno "Installation has finished. Restart?" 10 54); then
     reboot
   else
     exit
