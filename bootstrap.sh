@@ -32,6 +32,7 @@ exists() { command -v "$1" >/dev/null 2>&1; }
 error() { printf "$@\n" >&2; exit 1; }
 try() { "$1" || error "Failure at $1"; }
 distro() { [[ $(cat /etc/*-release | grep -w NAME | cut -d= -f2 | tr -d '"') == *$1* ]]; }
+config(){ /usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home $@; }
 
 ### Variables (Edit these!) ###
 dotfile_repo="https://www.github.com/qrbounty/dotfiles.git"
@@ -52,10 +53,9 @@ declare -a deb_installers=(
   "install_vscode"
   "install_bat"
   "random_wallpaper"
-  "install_vimplug"
+  "config_dotfiles"
+  "install_vimplug" # Relies on dotfiles
 )
-
-
 
 ### Installers ###
 apt_install() { debconf-apt-progress -- apt-get install -qq -y -o=Dpkg::Use-Pty=0 $2; }
@@ -116,44 +116,25 @@ random_wallpaper(){
   /bin/su -c "/bin/curl --silent -L \"https://picsum.photos/$width/$height/\" --create-dirs -o $user_home/Pictures/Wallpapers/starter.jpg" - $SUDO_USER
 }
 
-debian_install() {
-  debconf-apt-progress -- apt-get update
-  debconf-apt-progress -- apt-get upgrade -y
-  
-  # TODO: Merge these in the end so they're all a single command.
-  packages = ""
-  for package in "${deb_custom_pkgs[@]}"; do
-    packages+="${package} "
-  done
-  apt_install "custom" "$packages"
-  
-  if dmidecode -s system-manufacturer = "VMware, Inc."; then
-    apt_install "VMware" "open-vm-tools-desktop"
-  fi
-  echo 'exec i3' > $user_home/.xsession
+config_docker(){
+  #TODO: Pretty much all the things
+  usermod -aG docker $SUDO_USER
+}
 
-  clear
-  # Dotfiles Install
+add_user(){
+  #TODO: Everything
+  echo "None"
+}
+
+config_dotfiles(){
   if exists git; then
     echo "Fetching Dotfiles"
     try dotfile_copy
   else
     err "git not detected, cannot gather dotfiles."
   fi
-
-  # TODO: Get whiptail to work for these.
-  i=1
-  echo "=== Customizing Install ==="
-  for installer in "${deb_installers[@]}"; do
-    echo -e "Stage $i/${#deb_installers[@]}: $installer"
-    try $installer
-    ((i++))
-  done
 }
 
-### Dotfile Fetch/Setup ###
-# TODO: Make this cleaner.
-config(){ /usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home $@; }
 dotfile_copy(){
   [ ! -d "$user_home/.cfg" ] && /bin/su -c "mkdir $user_home/.cfg" - $SUDO_USER
   /bin/su -c "/usr/bin/git clone --bare $dotfile_repo $user_home/.cfg" - $SUDO_USER
@@ -171,6 +152,35 @@ dotfile_copy(){
   /usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home ls-files
   chmod +x $user_home/.config/shell/motd.sh
 }
+
+debian_install() {
+  packages = ""
+
+  debconf-apt-progress -- apt-get update
+  debconf-apt-progress -- apt-get upgrade -y
+  for package in "${deb_custom_pkgs[@]}"; do
+    packages+="${package} "
+  done
+  apt_install "custom" "$packages"
+  
+  # Some odds and ends
+  if dmidecode -s system-manufacturer = "VMware, Inc."; then
+    apt_install "VMware" "open-vm-tools-desktop"
+  fi
+  echo 'exec i3' > $user_home/.xsession
+  clear
+
+  # TODO: Get whiptail to work for these.
+  i=1
+  echo "=== Customizing Install ==="
+  for installer in "${deb_installers[@]}"; do
+    echo -e "Stage $i/${#deb_installers[@]}: $installer"
+    try $installer
+    ((i++))
+  done
+}
+
+
 
 # Main
 warning="WARNING! WARNING! WARNING!\n\nThis is for a FRESHLY INSTALLED system only!\nAre you sure you want to run this?\n\nWARNING! WARNING! WARNING!"
