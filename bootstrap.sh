@@ -1,10 +1,8 @@
 #!/bin/bash
 #
-# This is a setup script for my systems.
+# This is a setup script for my Debian systems.
 #
-# TODO: Add dry run functionality
 # TODO: Replace wget calls with curl
-# TODO: Get copy/paste working between host and guest for VMWare installs.
 
 set -e
 
