@@ -1,5 +1,5 @@
 # Bootstrapper
-A personal bootstrap script for my new systems. From fresh Debian install to ready to work in about 15 minutes.
+A personal bootstrap script for my new systems. From fresh Debian install to ready to work in about 8 minutes.
 
 ## Purpose
 This works in tandem with my dotfiles repo when run on a new system. It will detect the current OS and install the relevant packages and applications needed, as well as pull down my dotfiles.
