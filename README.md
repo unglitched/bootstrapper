@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/qrbounty/bootstrapper/master/warning.png">
+</p>
+
 # Bootstrapper
 A personal bootstrap script for my new systems. From fresh Debian install to ready to work in about 8 minutes.
 
