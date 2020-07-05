@@ -6,10 +6,27 @@
 A personal bootstrap script for my new systems. From fresh Debian install to ready to work in about 8 minutes.
 
 ## Purpose
-This works in tandem with my dotfiles repo when run on a new system. It will detect the current OS and install the relevant packages and applications needed, as well as pull down my dotfiles.
+This works in tandem with my dotfiles repo when run on a new system. It will detect the current OS and install the relevant packages and applications needed, as well as pull down my dotfiles. It is currently scoped to Debian only.
+
+## What It Does
+Installation workflow goes like this:
+1. Check for & install apt updates
+2. Install apt relevant apt packages
+3. Install VMware Tools, if needed.
+4. Run custom installer functions. Currently:
+    * Selected Python3 packages
+    * LightDM
+    * Zsh
+    * VS Code
+    * Bat
+    * Grab some random wallpapers
+    * Grab user dotfiles
+    * Configure Docker & pull down selected images
+    * Install VimPlug
+5. Reboot - and done!
 
 ## Usage
-1. Do a fresh install of your OS (Debian thus far), defaults should be fine however you can deselect any UI stuff if you want.
+1. Do a fresh install of your OS, defaults should be fine however you can deselect any UI stuff if you want.
 2. Make your account a member of the sudo group (see Requirements below)
 3. `wget https://raw.githubusercontent.com/qrbounty/bootstrapper/master/bootstrap.sh`
 4. Examine `bootstrap.sh` and customize as needed
