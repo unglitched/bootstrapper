@@ -25,6 +25,7 @@ export NEWT_COLORS='
   title=green,black
   emptyscale=black,lightgray
   fullscale=black,green
+  compactbutton=green,black
 '
 
 ### Helpers / Formatters ###
