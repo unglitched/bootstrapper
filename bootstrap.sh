@@ -168,11 +168,13 @@ debian_install() {
   done
   apt_install "custom" "$packages"
   
-  # Some odds and ends
+  # Some odds and ends. Need to be split out later.
   if dmidecode -s system-manufacturer = "VMware, Inc."; then
     apt_install "VMware" "open-vm-tools-desktop"
+    echo 'exec /usr/bin/vmware-user-suid-wrapper &; exec i3' > $user_home/.xsession # Make this non-root owned.
+  else
+    echo 'exec i3' > $user_home/.xsession # Make this non-root owned.
   fi
-  echo 'exec i3' > $user_home/.xsession
   clear
 
   # TODO: Get whiptail to work for these.
