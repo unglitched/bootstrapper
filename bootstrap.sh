@@ -54,6 +54,7 @@ declare -a deb_installers=(
   "install_bat"
   "random_wallpaper"
   "config_dotfiles"
+  "config_docker"
   "install_vimplug" # Relies on dotfiles
 )
 
@@ -119,6 +120,7 @@ random_wallpaper(){
 config_docker(){
   #TODO: Pretty much all the things
   usermod -aG docker $SUDO_USER
+  /bin/su -c "/usr/bin/docker pull caffix/amass" - $SUDO_USER
 }
 
 add_user(){
