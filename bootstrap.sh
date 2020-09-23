@@ -180,10 +180,10 @@ debian_install() {
   {
     for ((i = 1 ; i <=${#deb_installers[@]}+1; i+=1)); do
       percent=$(awk "BEGIN {printf \"%.0f\n\", $i/${#deb_installers[@]}*100}")
-      echo -e "XXX\n$percent\n\nRunning custom installer: ${deb_installers[i]} \nXXX"
+      echo -e "XXX\n$percent\nRunning custom installer: ${deb_installers[i]} \nXXX"
       try ${deb_installers[i]} > /dev/null 2>&1
     done
-   } | whiptail --title "$header" --gauge "Running custom install phases..." 10 54 0
+   } | whiptail --title "$header" --gauge "Running custom install phases..." 6 54 0
 }
 
 
