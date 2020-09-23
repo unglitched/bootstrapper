@@ -64,7 +64,6 @@ declare -a deb_installers=(
 
 ### Installers ###
 apt_install() { debconf-apt-progress -- apt-get install -qq -y -o=Dpkg::Use-Pty=0 $2; }
-apt_fast_install() { apt-fast install -qq -y -o=Dpkg::Use-Pty=0 $2; }
 pip3_install() { pip3 -q install $pip3_pkgs; < /dev/null > /dev/null && echo "Installed!"; }
 
 configure_lightdm(){
@@ -166,19 +165,10 @@ debian_install() {
 
   debconf-apt-progress -- apt-get update
   debconf-apt-progress -- apt-get upgrade -y
-  echo "deb http://ppa.launchpad.net/apt-fast/stable/ubuntu bionic main" >> /etc/apt/sources.list.d/apt-fast.list
-  echo "deb-src http://ppa.launchpad.net/apt-fast/stable/ubuntu bionic main" >> /etc/apt/sources.list.d/apt-fast.list
-  apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A2166B8DE8BDC3367D1901C11EE2FF37CA8DA16B
-  debconf-apt-progress -- apt-get update
-  apt_install "apt-fast" "apt-fast"
-  echo debconf apt-fast/maxdownloads string 16 | debconf-set-selections
-  echo debconf apt-fast/dlflag boolean true | debconf-set-selections
-  echo debconf apt-fast/aptmanager string apt-get | debconf-set-selections
-  echo "MIRRORS=( 'http://deb.debian.org/debian','http://ftp.debian.org/debian, http://ftp2.de.debian.org/debian, http://ftp.de.debian.org/debian, ftp://ftp.uni-kl.de/debian' )" >> /etc/apt-fast.conf
   for package in "${deb_custom_pkgs[@]}"; do
     packages+="${package} "
   done
-  apt_fast_install "custom" "$packages"
+  apt_install "custom" "$packages"
   
   # Some odds and ends. Need to be split out later.
   if dmidecode -s system-manufacturer = "VMware, Inc."; then
