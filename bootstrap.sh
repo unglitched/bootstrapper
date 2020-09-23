@@ -34,6 +34,8 @@ distro() { [[ $(cat /etc/*-release | grep -w NAME | cut -d= -f2 | tr -d '"') == 
 config(){ /usr/bin/git --git-dir=$user_home/.cfg/ --work-tree=$user_home $@; }
 
 ### Variables (Edit these!) ###
+header="QRBounty's Bootstrap Script 2.0"
+logo="ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLAogICAgICAgICAgICAsLS4gICAgICAgXywtLS0uXyBfXyAgLyBcCiAgICAgICAgICAgLyAgKSAgICAuLScgICAgICAgYC4vIC8gICBcCiAgICAgICAgICAoICAoICAgLCcgICAgICAgICAgICBgLyAgICAvfAogICAgICAgICAgIFwgIGAtIiAgICAgICAgICAgICBcJ1wgICAvIHwKICAgICAgICAgICAgYC4gICAgICAgICAgICAgICwgIFwgXCAvICB8CiAgICAgICAgICAgICAvYC4gICAgICAgICAgLCctYC0tLS1ZICAgfAogICAgICAgICAgICAoICAgICAgICAgICAgOyB3YXJleiAgfCAgICcKICAgICAgICAgICAgfCAgLC0uICAgICwtJyAgICAmICAgIHwgIC8KICAgICAgICAgICAgfCAgfCAoICAgfCAgICAgc3R1ZmYgIHwgLwogICAgICAgICAgICApICB8ICBcICBgLl9fX19fX19fX19ffC8KICAgICAgICAgICAgYC0tJyAgIGAtLScKCiAgV0FSTklORyEgVGhpcyBzY3JpcHQgaXMgZm9yIGZyZXNoIHN5c3RlbXMgT05MWSEgIAogICAgICAgICAgICBEbyB5b3Ugd2FudCB0byBjb250aW51ZT8="
 dotfile_repo="https://www.github.com/qrbounty/dotfiles.git"
 pip3_pkgs="yara pillow"
 declare -a deb_custom_pkgs=(
@@ -175,21 +177,18 @@ debian_install() {
   fi
   clear
 
-  # TODO: Get whiptail to work for these.
-  i=1
-  echo "=== Customizing Install ==="
-  for installer in "${deb_installers[@]}"; do
-    echo -e "Stage $i/${#deb_installers[@]}: $installer"
-    try $installer
-    ((i++))
-  done
+  {
+    for ((i = 1 ; i <=${#deb_installers[@]}+1; i+=1)); do
+      percent=$(awk "BEGIN {printf \"%.0f\n\", $i/${#deb_installers[@]}*100}")
+      echo -e "XXX\n$percent\n\nRunning custom installer: ${deb_installers[i]} \nXXX"
+      try ${deb_installers[i]} > /dev/null 2>&1
+    done
+   } | whiptail --title "$header" --gauge "Running custom install phases..." 10 54 0
 }
 
 
 
 # Main
-header="QRBounty's Bootstrap Script 2.0"
-logo="ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLAogICAgICAgICAgICAsLS4gICAgICAgXywtLS0uXyBfXyAgLyBcCiAgICAgICAgICAgLyAgKSAgICAuLScgICAgICAgYC4vIC8gICBcCiAgICAgICAgICAoICAoICAgLCcgICAgICAgICAgICBgLyAgICAvfAogICAgICAgICAgIFwgIGAtIiAgICAgICAgICAgICBcJ1wgICAvIHwKICAgICAgICAgICAgYC4gICAgICAgICAgICAgICwgIFwgXCAvICB8CiAgICAgICAgICAgICAvYC4gICAgICAgICAgLCctYC0tLS1ZICAgfAogICAgICAgICAgICAoICAgICAgICAgICAgOyB3YXJleiAgfCAgICcKICAgICAgICAgICAgfCAgLC0uICAgICwtJyAgICAmICAgIHwgIC8KICAgICAgICAgICAgfCAgfCAoICAgfCAgICAgc3R1ZmYgIHwgLwogICAgICAgICAgICApICB8ICBcICBgLl9fX19fX19fX19ffC8KICAgICAgICAgICAgYC0tJyAgIGAtLScKCiAgV0FSTklORyEgVGhpcyBzY3JpcHQgaXMgZm9yIGZyZXNoIHN5c3RlbXMgT05MWSEgIAogICAgICAgICAgICBEbyB5b3Ugd2FudCB0byBjb250aW51ZT8="
 if (whiptail --defaultno --title "$header" --yesno "$(echo $logo | base64 -d -)" 22 54); then
   clear
   # OS Install
