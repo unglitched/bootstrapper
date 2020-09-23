@@ -161,7 +161,11 @@ dotfile_copy(){
   chmod +x $user_home/.config/shell/motd.sh
 }
 
-install_aptfast(){
+debian_install() {
+  packages = ""
+
+  debconf-apt-progress -- apt-get update
+  debconf-apt-progress -- apt-get upgrade -y
   echo "deb http://ppa.launchpad.net/apt-fast/stable/ubuntu focal main" >> /etc/apt/sources.list.d/apt-fast.list
   echo "deb-src http://ppa.launchpad.net/apt-fast/stable/ubuntu focal main" >> /etc/apt/sources.list.d/apt-fast.list
   apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A2166B8DE8BDC3367D1901C11EE2FF37CA8DA16B
@@ -171,14 +175,6 @@ install_aptfast(){
   echo debconf apt-fast/dlflag boolean true | debconf-set-selections
   echo debconf apt-fast/aptmanager string apt-get | debconf-set-selections
   echo "MIRRORS=( 'http://deb.debian.org/debian','http://ftp.debian.org/debian, http://ftp2.de.debian.org/debian, http://ftp.de.debian.org/debian, ftp://ftp.uni-kl.de/debian' )" >> /etc/apt-fast.conf
-}
-
-debian_install() {
-  packages = ""
-
-  debconf-apt-progress -- apt-get update
-  debconf-apt-progress -- apt-get upgrade -y
-  install_aptfast
   for package in "${deb_custom_pkgs[@]}"; do
     packages+="${package} "
   done
