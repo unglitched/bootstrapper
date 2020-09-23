@@ -21,7 +21,7 @@ export NEWT_COLORS='
   button=black,green
   label=green,black
   title=green,black
-  emptyscale=black,green
+  emptyscale=black,lightgray
   fullscale=black,green
   compactbutton=green,black
 '
@@ -45,7 +45,7 @@ declare -a deb_custom_pkgs=(
   "xorg i3 i3blocks kitty lightdm rofi feh"                   # Desktop
   "vlc transmission audacity firefox-esr docker.io"           # Common Apps
   "binwalk gdb flashrom jsbeautifier afl hashcat zzuf"        # Security
-  "wireshark mitmproxy nmap aircrack-ng"                      # 'Networking'
+  "mitmproxy nmap aircrack-ng" # +wireshark                   # 'Networking'
   "lolcat boxes tldr"                                         # Misc
   # "torbrowser-launcher" (Debian 11)
 )
