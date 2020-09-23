@@ -166,8 +166,8 @@ debian_install() {
 
   debconf-apt-progress -- apt-get update
   debconf-apt-progress -- apt-get upgrade -y
-  echo "deb http://ppa.launchpad.net/apt-fast/stable/ubuntu focal main" >> /etc/apt/sources.list.d/apt-fast.list
-  echo "deb-src http://ppa.launchpad.net/apt-fast/stable/ubuntu focal main" >> /etc/apt/sources.list.d/apt-fast.list
+  echo "deb http://ppa.launchpad.net/apt-fast/stable/ubuntu bionic main" >> /etc/apt/sources.list.d/apt-fast.list
+  echo "deb-src http://ppa.launchpad.net/apt-fast/stable/ubuntu bionic main" >> /etc/apt/sources.list.d/apt-fast.list
   apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A2166B8DE8BDC3367D1901C11EE2FF37CA8DA16B
   debconf-apt-progress -- apt-get update
   apt_install "apt-fast" "apt-fast"
