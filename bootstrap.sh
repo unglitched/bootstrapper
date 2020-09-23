@@ -21,7 +21,7 @@ export NEWT_COLORS='
   button=black,green
   label=green,black
   title=green,black
-  emptyscale=black,lightgray
+  emptyscale=black,green
   fullscale=black,green
   compactbutton=green,black
 '
@@ -39,13 +39,14 @@ logo="ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLAogICAgICAgICAgICAsLS4gIC
 dotfile_repo="https://www.github.com/qrbounty/dotfiles.git"
 pip3_pkgs="yara pillow"
 declare -a deb_custom_pkgs=(
-  "curl locate git python3 python3-pip suckless-tools tmux vim tree" # Dependencies
-  "zsh highlight lolcat boxes tldr ripgrep neovim exa ranger"        # 'Essentials'
-  "fonts-powerline fonts-hack fonts-font-awesome"                    # Fonts
-  "xorg i3 i3blocks kitty lightdm rofi feh"                          # Desktop
-  "vlc transmission audacity firefox-esr docker.io"                  # Common Apps
-  "binwalk gdb flashrom jsbeautifier afl hashcat zzuf"               # Security
-  "wireshark mitmproxy nmap aircrack-ng"                             # 'Networking'
+  "curl locate git python3 python3-pip golang suckless-tools" # Dependencies
+  "zsh highlight ripgrep neovim exa ranger tmux vim tree"     # 'Essentials'
+  "fonts-powerline fonts-hack fonts-font-awesome"             # Fonts
+  "xorg i3 i3blocks kitty lightdm rofi feh"                   # Desktop
+  "vlc transmission audacity firefox-esr docker.io"           # Common Apps
+  "binwalk gdb flashrom jsbeautifier afl hashcat zzuf"        # Security
+  "wireshark mitmproxy nmap aircrack-ng"                      # 'Networking'
+  "lolcat boxes tldr"                                         # Misc
   # "torbrowser-launcher" (Debian 11)
 )
 
