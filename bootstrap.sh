@@ -118,7 +118,8 @@ random_wallpaper(){
   height=1050
   width=1680
   for i in {1..5}; do
-    /bin/su -c "/bin/curl --silent -L \"https://picsum.photos/$width/$height/\" --create-dirs -o $user_home/Pictures/Wallpapers/starter$i.jpg" - $SUDO_USER
+    #/bin/su -c "/bin/curl --silent -L \"https://picsum.photos/$width/$height/\" --create-dirs -o $user_home/Pictures/Wallpapers/starter$i.jpg" - $SUDO_USER
+    /bin/su -c "/bin/curl --silent -L \"https://source.unsplash.com/$widthx$height/?abstract" --create-dirs -o $user_home/Pictures/Wallpapers/starter$i.jpg" - $SUDO_USER
   done
 }
 
