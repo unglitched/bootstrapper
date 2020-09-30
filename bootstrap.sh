@@ -125,6 +125,7 @@ random_wallpaper(){
 install_docker(){
   curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
   add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+  apt-get update < /dev/null > /dev/null
   DEBIAN_FRONTEND=noninteractive apt-get install -qq -o=Dpkg::Use-Pty=0 docker-ce docker-ce-cli containerd.io < /dev/null > /dev/null
   usermod -aG docker $SUDO_USER
 }
