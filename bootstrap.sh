@@ -52,13 +52,13 @@ declare -a deb_custom_pkgs=(
 
 declare -a deb_installers=(
   "pip3_install"
-  "install_docker"
   "configure_lightdm"
   "install_zsh"
   "install_vscode"
   "install_bat"
   "random_wallpaper"
   "config_dotfiles"
+  "install_docker"
   "install_vimplug" # Relies on dotfiles
 )
 
