@@ -39,26 +39,26 @@ logo="ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLAogICAgICAgICAgICAsLS4gIC
 dotfile_repo="https://www.github.com/qrbounty/dotfiles.git"
 pip3_pkgs="yara pillow"
 declare -a deb_custom_pkgs=(
-  "curl locate git python3 python3-pip golang suckless-tools" # Dependencies
-  "zsh highlight ripgrep neovim exa ranger tmux vim tree"     # 'Essentials'
-  "fonts-powerline fonts-hack fonts-font-awesome"             # Fonts
-  "xorg i3 i3blocks kitty lightdm rofi feh"                   # Desktop
-  "vlc transmission audacity firefox-esr docker.io"           # Common Apps
-  "binwalk gdb flashrom jsbeautifier afl hashcat zzuf"        # Security
-  "mitmproxy nmap aircrack-ng" # +wireshark                   # 'Networking'
-  "lolcat boxes tldr"                                         # Misc
+  "curl locate git python3 python3-pip golang suckless-tools"                   # Dependencies
+  "apt-transport-https ca-certificates gnupg-agent software-properties-common"  # More deps
+  "zsh highlight ripgrep neovim exa ranger tmux vim tree"                       # 'Essentials'
+  "fonts-powerline fonts-hack fonts-font-awesome lolcat boxes tldr"             # Fonts/Misc.
+  "xorg i3 i3blocks kitty lightdm rofi feh"                                     # Desktop
+  "vlc transmission audacity firefox-esr"                                       # Common Apps
+  "binwalk gdb flashrom jsbeautifier afl hashcat zzuf"                          # Security
+  "mitmproxy nmap aircrack-ng" # +wireshark                                     # 'Networking'
   # "torbrowser-launcher" (Debian 11)
 )
 
 declare -a deb_installers=(
   "pip3_install"
+  "install_docker"
   "configure_lightdm"
   "install_zsh"
   "install_vscode"
   "install_bat"
   "random_wallpaper"
   "config_dotfiles"
-  "config_docker"
   "install_vimplug" # Relies on dotfiles
 )
 
@@ -96,7 +96,6 @@ install_vscode(){
   curl -s https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
   install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/
   sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list'
-  DEBIAN_FRONTEND=noninteractive apt-get install -qq -o=Dpkg::Use-Pty=0 apt-transport-https < /dev/null > /dev/null
   apt-get update < /dev/null > /dev/null
   DEBIAN_FRONTEND=noninteractive apt-get install -qq -o=Dpkg::Use-Pty=0 code < /dev/null > /dev/null
   rm packages.microsoft.gpg
@@ -123,8 +122,10 @@ random_wallpaper(){
   done
 }
 
-config_docker(){
-  #TODO: Pretty much all the things.
+install_docker(){
+  curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+  add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable"
+  DEBIAN_FRONTEND=noninteractive apt-get install -qq -o=Dpkg::Use-Pty=0 docker-ce docker-ce-cli containerd.io < /dev/null > /dev/null
   usermod -aG docker $SUDO_USER
 }
 
