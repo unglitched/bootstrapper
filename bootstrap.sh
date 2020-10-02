@@ -39,7 +39,7 @@ logo="ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgLAogICAgICAgICAgICAsLS4gIC
 dotfile_repo="https://www.github.com/qrbounty/dotfiles.git"
 pip3_pkgs="yara pillow"
 declare -a deb_custom_pkgs=(
-  "curl locate git python3 python3-pip golang suckless-tools"                   # Dependencies
+  "curl locate git python3 python3-pip golang suckless-tools gnupg2"                   # Dependencies
   "apt-transport-https ca-certificates gnupg-agent software-properties-common"  # More deps
   "zsh highlight ripgrep neovim exa ranger tmux vim tree"                       # 'Essentials'
   "fonts-powerline fonts-hack fonts-font-awesome lolcat boxes tldr"             # Fonts/Misc.
