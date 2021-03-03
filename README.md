@@ -48,7 +48,7 @@ Debian 10: add the user account to the group sudo with `/sbin/adduser username s
 ## Package Tracking
 The following helps me track which versions of certain packages are available between distros. This is mostly to help me evaluate which distributions are keeping up with tools I use.
 
-| Package | BlackArch | Kali | Parrot | FreeBSD | Debian Testing | Manjaro | Void | 
+| Package | BlackArch | Kali Rolling | Parrot | FreeBSD | Debian Testing | Manjaro | Void | 
 | --- |  --- |  --- |  --- |  --- |  --- |  --- |  --- | 
 | amass | ![](https://repology.org/badge/version-for-repo/blackarch/amass.svg?header=) | ![](https://repology.org/badge/version-for-repo/kali_rolling/amass.svg?header=) | ![](https://repology.org/badge/version-for-repo/parrot/amass.svg?header=) | ![](https://repology.org/badge/version-for-repo/freebsd/amass.svg?header=) | ![](https://repology.org/badge/version-for-repo/debian_testing/amass.svg?header=) | ![](https://repology.org/badge/version-for-repo/manjaro_stable/amass.svg?header=) | ![](https://repology.org/badge/version-for-repo/void_x86_64/amass.svg?header=) | 
 | i3 | ![](https://repology.org/badge/version-for-repo/blackarch/i3.svg?header=) | ![](https://repology.org/badge/version-for-repo/kali_rolling/i3.svg?header=) | ![](https://repology.org/badge/version-for-repo/parrot/i3.svg?header=) | ![](https://repology.org/badge/version-for-repo/freebsd/i3.svg?header=) | ![](https://repology.org/badge/version-for-repo/debian_testing/i3.svg?header=) | ![](https://repology.org/badge/version-for-repo/manjaro_stable/i3.svg?header=) | ![](https://repology.org/badge/version-for-repo/void_x86_64/i3.svg?header=) | 
